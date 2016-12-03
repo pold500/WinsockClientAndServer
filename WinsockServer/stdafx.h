@@ -20,4 +20,6 @@
 #include <atomic>
 #include <mutex>
 #include <sstream> // for ostringstream
+#include <algorithm>
+
 // TODO: reference additional headers your program requires here

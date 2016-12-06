@@ -86,12 +86,15 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SERVER;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\tinyobjloader-master;$(ProjectDir)\..\cppcodec\cppcodec;$(ProjectDir)\..\HelperLibrary;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>helperlibrary.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)static_libraries\$(Configuration)\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -145,13 +148,22 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GetGeometrySendProperFormat.h" />
+    <ClInclude Include="GetVertexesCommand.h" />
     <ClInclude Include="Helpers.h" />
+    <ClInclude Include="ListCommand.h" />
+    <ClInclude Include="SendLargeFileCmd.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UserCommand.h" />
     <ClInclude Include="WSASocket.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GetGeometrySendProperFormat.cpp" />
+    <ClCompile Include="GetVertexesCommand.cpp" />
+    <ClCompile Include="ListCommand.cpp" />
+    <ClCompile Include="SendLargeFileCmd.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -159,8 +171,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="WinsockServer.cpp" />
+    <ClCompile Include="UserCommand.cpp" />
+    <ClCompile Include="UserCommandNoOperation.cpp" />
+    <ClCompile Include="WinsockServerMain.cpp" />
     <ClCompile Include="WSASocket.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UserCommandNoOperation.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

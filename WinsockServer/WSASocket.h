@@ -7,10 +7,10 @@
 class WSASocketC
 {
 	static const char* DEFAULT_PORT;
-	custom_deleter_unique_ptr<addrinfo> m_addr_info;
+	Helpers::custom_deleter_unique_ptr<addrinfo> m_addr_info;
 	void initWSA();
 public:
-	Socket<SOCKET> createListenSocket() const;
+	Helpers::Socket<SOCKET> createListenSocket() const;
 	WSASocketC();
 	~WSASocketC();
 };

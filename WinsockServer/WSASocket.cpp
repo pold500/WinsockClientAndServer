@@ -32,12 +32,12 @@ void WSASocketC::initWSA()
 		WSACleanup();
 		throw std::exception();
 	}
-	m_addr_info = custom_deleter_unique_ptr<addrinfo>(addr_info, [](addrinfo* f) { freeaddrinfo(f); });
+	m_addr_info = Helpers::custom_deleter_unique_ptr<addrinfo>(addr_info, [](addrinfo* f) { freeaddrinfo(f); });
 }
 
 
 
-Socket<SOCKET> WSASocketC::createListenSocket() const
+Helpers::Socket<SOCKET> WSASocketC::createListenSocket() const
 {
 	// Create a Listening SOCKET for connecting to server
 	SOCKET ListenSocket = socket(m_addr_info->ai_family, m_addr_info->ai_socktype, m_addr_info->ai_protocol);

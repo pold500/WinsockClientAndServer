@@ -1,7 +1,8 @@
 // WinsockClient.cpp : Defines the entry point for the console application.
 //
 #include "stdafx.h"
-#include <string>
+#include "Helpers.h"
+
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
@@ -9,6 +10,7 @@
 
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27015"
+#undef max
 
 SOCKET InitConnectionSocket()
 {
@@ -89,6 +91,14 @@ int shutDownSocket(const SOCKET socket)
 	return 0;
 }
 
+void writeReponseToFile(const std::string& response)
+{
+	std::ofstream out("out.txt");
+	out << response;
+	out.flush();
+	out.close();
+}
+
 int main(int argc, char **argv)
 {
 	std::cout << "Client started \n";
@@ -99,7 +109,7 @@ int main(int argc, char **argv)
 		return str;
 	};
 	
-	const SOCKET ConnectSocket = InitConnectionSocket();
+	const Helpers::Socket<SOCKET> ConnectSocket = InitConnectionSocket();
 
 	if (ConnectSocket == INVALID_SOCKET)
 	{
@@ -115,49 +125,25 @@ int main(int argc, char **argv)
 		const auto userCmd = getCmd();
 		if (!userCmd.empty())
 		{
-			// Send an initial buffer
-			
-			int bytesReceived = send(ConnectSocket, userCmd.c_str(), userCmd.size(), 0);
-			if (bytesReceived == SOCKET_ERROR) 
+			Helpers::sendPacket(ConnectSocket, userCmd);
+			try 
 			{
-				printf("send failed with error: %d\n", WSAGetLastError());
-				closesocket(ConnectSocket);
-				WSACleanup();
-				return 1;
+				const auto rcvdPacket = Helpers::receivePacket(ConnectSocket);
+				std::cout << "Server response: \n";
+				std::cout << rcvdPacket << std::endl;
+				//writeReponseToFile(rcvdPacket);
 			}
-
-			printf("Bytes Sent: %ld\n", bytesReceived);
-			
-			// Receive until the peer closes the connection
-			
-			std::vector<char> recvbuf;
-			recvbuf.resize(500);
-			
-			do 
+			catch (const std::exception& ex)
 			{
-				bytesReceived = recv(ConnectSocket, &recvbuf[0], recvbuf.size(), 0);
-				if (bytesReceived > 0)
-				{
-					printf("Bytes received: %d\n", bytesReceived);
-				}
-				else if (bytesReceived == 0)
-				{
-					printf("Connection closed\n");
-					break;
-				}
-				else
-				{
-					printf("recv failed with error: %d\n", WSAGetLastError());
-				}
-			} 
-			while (bytesReceived == 0);
+				std::cout << "Client caught an exception : " << ex.what() << "\n";
+				std::cin.get();
+			}
+			
 		}
 	}
 	
 	// cleanup
 	shutDownSocket(ConnectSocket);
-	closesocket(ConnectSocket);
 	WSACleanup();
-
 	return 0;
 }

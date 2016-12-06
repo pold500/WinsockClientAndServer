@@ -1,0 +1,10 @@
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/CMakeFiles/INSTALL.dir
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/CMakeFiles/ALL_BUILD.dir
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/CMakeFiles/ZERO_CHECK.dir
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/sandbox/CMakeFiles/sandbox.dir
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/sandbox/CMakeFiles/sandbox_json.dir
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/sandbox/CMakeFiles/sandbox_rtti.dir
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/sandbox/CMakeFiles/sandbox_vs.dir
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/sandbox/CMakeFiles/INSTALL.dir
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/sandbox/sandbox_shared_lib/CMakeFiles/sandbox_vs_dll.dir
+C:/Users/Pavel/Documents/Visual Studio 2015/Projects/WinsockClientAndServer/cereal-1.2.1/sandbox/sandbox_shared_lib/CMakeFiles/INSTALL.dir

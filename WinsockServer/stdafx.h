@@ -21,5 +21,7 @@
 #include <mutex>
 #include <sstream> // for ostringstream
 #include <algorithm>
+#include <map>
+#include <experimental/filesystem>
+#include "base64_default_rfc4648.hpp"
 
-// TODO: reference additional headers your program requires here

@@ -212,11 +212,11 @@ typedef struct {
 } shape_t;
 
 // Vertex attributes
-typedef struct {
+struct attrib_t {
   std::vector<float> vertices;   // 'v'
   std::vector<float> normals;    // 'vn'
   std::vector<float> texcoords;  // 'vt'
-} attrib_t;
+};
 
 typedef struct callback_t_ {
   // W is optional and set to 1 if there is no `w` item in `v` line

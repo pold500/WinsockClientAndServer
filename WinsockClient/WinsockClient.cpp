@@ -131,6 +131,19 @@ int main(int argc, char **argv)
 				const auto rcvdPacket = Helpers::receivePacket(ConnectSocket);
 				std::cout << "Server response: \n";
 				std::cout << rcvdPacket << std::endl;
+				auto cmd_tokens = Helpers::split(userCmd, ' ');
+				if (cmd_tokens.size() >= 2 && cmd_tokens[0] == "get" && cmd_tokens[1] == "polygons")
+				{
+					std::stringstream str_stream;
+					str_stream << rcvdPacket;
+					cereal::BinaryInputArchive inputArchive(str_stream);
+					ObjFileData fd;
+					fd.load(inputArchive);
+					cereal::JSONOutputArchive jsonOutputArchive(str_stream);
+					fd.save(jsonOutputArchive);
+					std::cout << str_stream.str();
+					std::cout << "\n";
+				}
 				//writeReponseToFile(rcvdPacket);
 			}
 			catch (const std::exception& ex)

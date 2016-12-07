@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "GetVertexesCommand.h"
 
-
-GetVertexesCommand::GetVertexesCommand(const SOCKET socket, const ObjFileData& objectData,
+SendGeometryCmd::SendGeometryCmd(const SOCKET socket, const ObjFileData& objectData,
 	const Helpers::ListInterval& list) :
 	m_socket(socket),
 	m_objectData(objectData),
@@ -10,10 +9,15 @@ GetVertexesCommand::GetVertexesCommand(const SOCKET socket, const ObjFileData& o
 {
 }
 
-void GetVertexesCommand::execute()
+void SendGeometryCmd::execute()
 {
 	//Serialize polygon data
-	auto polygonData = Helpers::serializePolygonData(m_objectData.m_polygons);
-	Helpers::sendPacket(m_socket, polygonData);
-
+	std::stringstream str_stream;
+	cereal::BinaryOutputArchive outputArchive(str_stream);
+	m_objectData.save(outputArchive);
+	Helpers::sendPacket(m_socket, str_stream.str());
+	//Test it
+	//cereal::BinaryInputArchive inputArchive(str_stream);
+	//ObjFileData  fd2;
+	//fd2.load(inputArchive);
 }

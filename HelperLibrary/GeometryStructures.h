@@ -1,9 +1,12 @@
-#pragma once
 #ifndef GeometryStructures_h__
 #define GeometryStructures_h__
 
 #include <vector>
 #include <map>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/archives/binary.hpp>
+#include <cereal/archives/json.hpp>
 
 template<typename T>
 struct Point3D
@@ -11,66 +14,54 @@ struct Point3D
 	T x;
 	T y;
 	T z;
-	static Point3D<float> Deserialize(const std::string& data)
+	// This method lets cereal know which data members to serialize
+	template<class Archive>
+	void serialize(Archive & archive)
 	{
-		Point3D<float> point;
-		point.x = Helpers::deserializeFloat(data.substr(0, sizeof(float)));
-		point.y = Helpers::deserializeFloat(data.substr(sizeof(float), sizeof(float)));
-		point.z = Helpers::deserializeFloat(data.substr(sizeof(float)*2, sizeof(float)));
-		return point;
-	}
-	static std::string Serialize(const Point3D<float>& point)
-	{
-		std::string result;
-		result += Helpers::serializeFloat(point.x);
-		result += Helpers::serializeFloat(point.y);
-		result += Helpers::serializeFloat(point.z);
-		return result;
-	}
-	static size_t GetSize()
-	{
-		return sizeof(float) * 3;
+		archive(x, y, z); // serialize things by passing them to the archive
 	}
 };
 
 struct Polygon3D
 {
 	std::array<Point3D<float>, 3> m_polygonVertices; //for triangulated model only
-	static Polygon3D Deserialize(const std::string& data)
+	
+	template<class Archive>
+	void serialize(Archive & archive)
 	{
-		Polygon3D polygon;
-		const size_t sizeOfPoint3D = Point3D<float>::GetSize();
-		polygon.m_polygonVertices[0] = Point3D<float>::Deserialize(data.substr(0, sizeOfPoint3D));
-		polygon.m_polygonVertices[0] = Point3D<float>::Deserialize(data.substr(sizeOfPoint3D, sizeOfPoint3D));
-		polygon.m_polygonVertices[0] = Point3D<float>::Deserialize(data.substr(sizeOfPoint3D * 2, sizeOfPoint3D));
-		return polygon;
+		archive(m_polygonVertices[0]);
+		archive(m_polygonVertices[1]);
+		archive(m_polygonVertices[2]);
 	}
-	size_t GetSize() const
-	{
-		return Point3D<float>::GetSize() * m_polygonVertices.size();
-	}
-	static std::string Serialize(const Polygon3D& polygon) 
-	{
-		std::string result;
-		for (const auto& point : polygon.m_polygonVertices)
-		{
-			result += Point3D<float>::Serialize(point);
-		}
-		return result;
-	}
+	
 };
 
 struct ObjFileData {
 	std::vector<Polygon3D> m_polygons;
 	std::string m_object_name;
+	ObjFileData() {}
 	ObjFileData(const std::string& object_name, const std::vector<Polygon3D>& polygons):
 		m_object_name(object_name),
 		m_polygons(polygons)
 	{
 
 	}
+	
+	template<class Archive>
+	void load(Archive & archive)
+	{
+		archive(m_object_name); // serialize things by passing them to the archive
+		archive(m_polygons);
+	}
+	template<class Archive>
+	void save(Archive & archive)
+	{
+		archive(m_object_name); // serialize things by passing them to the archive
+		archive(m_polygons);
+	}
+	std::string debugPrint() { return "";  }
 };
-using ObjFileDataMap = std::map < std::string, std::unique_ptr<ObjFileData>>;
+using ObjFileDataMap = std::map < std::string, ObjFileData>;
 
 
 #endif // GeometryStructures_h__

@@ -71,24 +71,24 @@ std::unique_ptr<UserCommand> Server::parseUserCmd(const std::string& user_input,
 		//get polygons model_name.obj 1,2,3,12
 		//or
 		//get polygons model_name.obj 1..12
-		if (cmd_tokens.size() > 3)
+		//if (cmd_tokens.size() > 3)
 		{
-			if (cmd_tokens[0] == "polygons")
+			//if (cmd_tokens[1] == "polygons")
 			{
-				const std::string model_name = cmd_tokens[2];
-
-				const std::string listOrInterval = cmd_tokens[3];
-				if (!model_name.empty() && !listOrInterval.empty())
+				//const std::string model_name = cmd_tokens[2];
+				const std::string model_name = "cornell_box.obj";
+				//const std::string listOrInterval = cmd_tokens[3];
+				//if (!model_name.empty() && !listOrInterval.empty())
 				{
 					Helpers::ListInterval listInterval;
-					if (listInterval.parse(listOrInterval))
+					//if (listInterval.parse(listOrInterval))
 					{
 						return createSendGeometryCommand(socket, m_objFilesMap, model_name, listInterval);
 					}
 				}
 			}
 		}
-		else
+		//else
 		{
 			//wrong cmd format: forgot to specify parameters
 			return createGetGeometrySendProperFormat(socket);
@@ -241,7 +241,7 @@ void Server::loadObjFiles()
 		std::unique_ptr<ObjFileData> fileData = loadAndParseObjectFile(filePath.first.c_str());//std::make_unique<ObjFileData>();
 		if (fileData.get())
 		{
-			m_objFilesMap[filePath.second].reset(fileData.get());
+			m_objFilesMap[filePath.second] = *fileData.get();
 		}
 	}
 }

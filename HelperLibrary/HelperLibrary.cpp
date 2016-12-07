@@ -117,21 +117,19 @@ std::string Helpers::receivePacket(const SOCKET ClientSocket)
 	return full_message_decoded;
 }
 
+std::vector<std::string> Helpers::split(const std::string & s, const char delim) 
+{
+	std::vector<std::string> elems;
+	std::stringstream ss;
+	ss.str(s);
+	std::string item;
+	while (std::getline(ss, item, delim)) {
+		elems.push_back(item);
+	}
+	return elems;
+}
 
-//void split(const std::string &s, const char delim, std::vector<std::string> &elems) {
-//	std::stringstream ss;
-//	ss.str(s);
-//	std::string item;
-//	while (std::getline(ss, item, delim)) {
-//		elems.push_back(item);
-//	}
-//}
-//
-//std::vector<std::string> split(const std::string & s, const char delim) {
-//	std::vector<std::string> elems;
-//	split(s, delim, elems);
-//	return elems;
-//}
+
 
 std::vector<std::string> Helpers::split(const std::string & str, const std::string& delimiter)
 {

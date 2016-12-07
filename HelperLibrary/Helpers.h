@@ -59,12 +59,8 @@ namespace Helpers
 		const size_t encodedSizePacketLength = base64::encode(packet_size).length();
 		return encodedSizePacketLength;
 	}
-
+	std::vector<std::string> split(const std::string & s, const char delim);
 	std::vector<std::string> split(const std::string &s, const std::string& delim);
-	std::string serializeInt(int intValue);
-	int deserializeInt(const std::string& strValue);
-	std::string serializeFloat(float floatValue);
-	float deserializeFloat(const std::string& stringValue);
 
 	struct ListInterval
 	{
@@ -80,8 +76,7 @@ namespace Helpers
 		bool parse(const std::string& input);
 	};
 
-	std::string serializePolygonData(const std::vector<Polygon3D>& polygonsVector);
-	void deseralizePolygonData(const std::string& input, std::vector<Polygon3D>& polygonsVector);
+	
 };
 
 #define console_log Helpers::GetLogStream()

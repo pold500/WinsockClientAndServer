@@ -4,13 +4,13 @@
 #include "UserCommand.h"
 #include "Helpers.h"
 
-class GetVertexesCommand: public UserCommand
+class SendGeometryCmd: public UserCommand
 {
 	SOCKET m_socket; 
 	ObjFileData m_objectData;
 	Helpers::ListInterval m_list;
 public:
-	GetVertexesCommand(const SOCKET socket, const ObjFileData& objectData, const Helpers::ListInterval& list);
+	SendGeometryCmd(const SOCKET socket, const ObjFileData& objectData, const Helpers::ListInterval& list);
 	virtual void execute() override;
 
 };

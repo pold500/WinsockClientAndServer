@@ -38,7 +38,7 @@ std::unique_ptr<UserCommand> createSendCommandListCommand(const SOCKET socket,
 std::unique_ptr<UserCommand> createSendGeometryCommand(const SOCKET socket, const ObjFileDataMap& objectsData,
 	const std::string& object_name, const Helpers::ListInterval& listInterval)
 {
-	return std::make_unique<GetVertexesCommand>(socket, *(*objectsData.find(object_name)).second, listInterval);
+	return std::make_unique<SendGeometryCmd>(socket, (*objectsData.find(object_name)).second, listInterval);
 }
 
 std::unique_ptr<UserCommand> createGetGeometrySendProperFormat(const SOCKET socket)

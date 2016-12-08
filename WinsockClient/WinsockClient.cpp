@@ -1,8 +1,5 @@
 // WinsockClient.cpp : Defines the entry point for the console application.
 //
-#pragma warning( push )
-#pragma warning( disable : 4101)
-#pragma warning( disable : 4003)
 #include "stdafx.h"
 #include "Helpers.h"
 #include "GeometryStructures.h"
@@ -13,11 +10,8 @@
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
 
-
-
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27015"
-#undef max
 
 SOCKET InitConnectionSocket()
 {
@@ -129,18 +123,19 @@ int main(int argc, char **argv)
 	while (true)
 	{
 		std::cout << "Please enter your command: \n";
-		const auto userCmd = getCmd();
+		const auto userCmd = std::string("get polygons cornell_box.obj 1,2,4,5,6");//getCmd();
 		if (!userCmd.empty())
 		{
 			Helpers::sendPacket(ConnectSocket, userCmd);
+			std::cout << "User request is : \"" << userCmd << "\"\n";
 			try 
 			{
 				const auto rcvdPacket = Helpers::receivePacket(ConnectSocket);
-				std::cout << "Server response: \n";
-				std::cout << rcvdPacket << std::endl;
+				//std::cout << "Server response: \n";
+				//std::cout << rcvdPacket << std::endl;
 				
 				std::vector<std::string> cmd_tokens;
-				boost::split(cmd_tokens, userCmd, boost::is_any_of(" "));
+				boost::split(cmd_tokens, userCmd, boost::is_any_of(", "));
 				
 				if (cmd_tokens.size() >= 2 && cmd_tokens[0] == "get" && cmd_tokens[1] == "polygons")
 				{
@@ -159,9 +154,11 @@ int main(int argc, char **argv)
 				std::cout << "Client caught an exception : " << ex.what() << "\n";
 				std::cin.get();
 			}
+			break;
 		}
 	}
-	
+	std::string a;
+	std::cin >> a;
 	// cleanup
 	shutDownSocket(ConnectSocket);
 	WSACleanup();

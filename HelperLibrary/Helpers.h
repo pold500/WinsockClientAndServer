@@ -103,7 +103,7 @@ namespace Helpers
 
 #define console_log Helpers::GetLogStream()
 
-#define printVar(x) console_log << ##x << " : " << x << "\n";
+#define printVar(x) console_log << #x << " : " << x << "\n";
 
 #define print(x)    console_log << x << "\n";
 

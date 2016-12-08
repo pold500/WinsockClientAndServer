@@ -169,7 +169,7 @@ std::vector<Polygon3D> GetPolygonsFromShape(const tinyobj::shape_t& shape, const
 	const size_t vertices_count_in_polygon = 3; //always 3 for triangulated model. and we have triangulated.
 	for (size_t polyId = 0; polyId < number_of_polygons; polyId++)
 	{
-		Polygon3D polygon;
+		Polygon3D polygon(polyId);
 		for (size_t i = 0; i < vertices_count_in_polygon; i++)
 		{
 			Point3D<float> vertex;

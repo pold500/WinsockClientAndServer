@@ -8,7 +8,7 @@ SendGeometryCmd::SendGeometryCmd(const SOCKET socket, const ObjFileData& objectD
 	m_cmdParameters(list)
 {
 }
-
+ 
 void SendGeometryCmd::execute()
 {
 	//Serialize polygon data
@@ -20,7 +20,10 @@ void SendGeometryCmd::execute()
 	{
 		for(auto polygonIndex : m_cmdParameters.polygons_list)
 		{
-			polygonsToReturn.push_back(m_objectData.m_polygons[polygonIndex]);
+			if ((size_t)polygonIndex < m_objectData.m_polygons.size())
+			{
+				polygonsToReturn.push_back(m_objectData.m_polygons[polygonIndex]);
+			}
 		}
 	}
 	else

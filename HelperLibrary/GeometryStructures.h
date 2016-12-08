@@ -10,7 +10,7 @@
 
 #define console_log Helpers::GetLogStream()
 
-#define printVar(x) console_log << ##x << " : " << x << "\n";
+#define printVar(x) console_log << #x << " : " << x << "\n";
 
 #define print(x)    console_log << x << "\n";
 
@@ -40,10 +40,14 @@ struct Point3D
 struct Polygon3D
 {
 	std::array<Point3D<float>, 3> m_polygonVertices; //for triangulated model only
-	
+	size_t m_polyIndex;
+	Polygon3D() {}
+	Polygon3D(size_t polyIndex) : m_polyIndex(polyIndex) {}
+
 	template<class Archive>
 	void serialize(Archive & archive)
 	{
+		archive(m_polyIndex);
 		archive(m_polygonVertices[0]);
 		archive(m_polygonVertices[1]);
 		archive(m_polygonVertices[2]);
@@ -51,6 +55,7 @@ struct Polygon3D
 	void debugPrint() const
 	{
 		print("Polygon3D");
+		printVar(m_polyIndex);
 		for (const auto& vertex : m_polygonVertices)
 		{
 			vertex.debugPrint();
@@ -84,6 +89,7 @@ struct ObjFileData {
 	void debugPrint() const
 	{
 		printVar(m_object_name);
+		printVar(m_polygons.size());
 		for (const auto& polygon : m_polygons)
 		{
 			polygon.debugPrint();

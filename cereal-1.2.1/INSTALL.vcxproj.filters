@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Pavel\Documents\Visual Studio 2015\Projects\WinsockClientAndServer\cereal-1.2.1\CMakeFiles\ea3087ed03a7d5a6104826b45a163907\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{567D74BB-8F83-378E-9F00-300C6D3F410A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

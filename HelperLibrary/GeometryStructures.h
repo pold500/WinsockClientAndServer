@@ -8,6 +8,14 @@
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/json.hpp>
 
+#define console_log Helpers::GetLogStream()
+
+#define printVar(x) console_log << ##x << " : " << x << "\n";
+
+#define print(x)    console_log << x << "\n";
+
+
+
 template<typename T>
 struct Point3D
 {
@@ -19,6 +27,13 @@ struct Point3D
 	void serialize(Archive & archive)
 	{
 		archive(x, y, z); // serialize things by passing them to the archive
+	}
+	void debugPrint() const
+	{
+		print("Point3D");
+		printVar(x);
+		printVar(y);
+		printVar(z);
 	}
 };
 
@@ -33,7 +48,14 @@ struct Polygon3D
 		archive(m_polygonVertices[1]);
 		archive(m_polygonVertices[2]);
 	}
-	
+	void debugPrint() const
+	{
+		print("Polygon3D");
+		for (const auto& vertex : m_polygonVertices)
+		{
+			vertex.debugPrint();
+		}
+	}
 };
 
 struct ObjFileData {
@@ -59,7 +81,14 @@ struct ObjFileData {
 		archive(m_object_name); // serialize things by passing them to the archive
 		archive(m_polygons);
 	}
-	std::string debugPrint() { return "";  }
+	void debugPrint() const
+	{
+		printVar(m_object_name);
+		for (const auto& polygon : m_polygons)
+		{
+			polygon.debugPrint();
+		}
+	}
 };
 using ObjFileDataMap = std::map < std::string, ObjFileData>;
 

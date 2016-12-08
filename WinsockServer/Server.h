@@ -46,8 +46,9 @@ class Server
 
 	//std::vector<Server::ObjFileData> getPolygonsForModel(const std::string& obj_file_name, const bool isInterval, const std::vector<int>& polygon_numbers_list) const;
 	std::vector<std::string> getFileNames() const;
+	std::vector<size_t> getPolyCount() const;
 	mutable std::vector<std::string> m_fileNames;
-
+	mutable std::vector<size_t> m_filePolyCount;
 public:
 	Server(WSASocketC* socketClass);
 	void Update();

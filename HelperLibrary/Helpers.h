@@ -1,7 +1,6 @@
 #ifndef __HELPERS__
 #define __HELPERS__
 
-
 #include <memory>
 #include <string>
 #include <array>
@@ -11,7 +10,6 @@
 #include <iostream>
 #include "LogStream.h"
 #include "base64_default_rfc4648.hpp"
-#include "GeometryStructures.h"
 
 namespace Helpers
 {
@@ -64,16 +62,40 @@ namespace Helpers
 
 	struct ListInterval
 	{
-		std::vector<int> vertices_list;
-		std::array<int, 2> vertices_range;
+		std::vector<int> polygons_list;
+		struct _polygons_range
+		{
+			size_t lower_bound;
+			size_t upper_bound;
+			_polygons_range():
+				lower_bound(-1),
+				upper_bound(-1)
+			{
+
+			}
+		} 
+		polygons_range;
+
 		bool m_isList;
 		ListInterval() : m_isList(false) {}
 		bool validate() const
 		{
+			if (m_isList)
+			{
+				return !polygons_list.empty();
+			}
+			//Check range if it's range
 			//in vertices range we can't have range lower border be higher then higher border
-			return (vertices_range[0] < vertices_range[1]);
+			else
+			{
+				return 
+					(polygons_range.lower_bound < polygons_range.upper_bound) && 
+					(polygons_range.lower_bound != -1 || 
+					 polygons_range.upper_bound != -1 ||
+					polygons_range.lower_bound != polygons_range.upper_bound);
+			}
 		}
-		bool parse(const std::string& input);
+		bool parse(const std::string& input); 
 	};
 
 	
@@ -81,6 +103,9 @@ namespace Helpers
 
 #define console_log Helpers::GetLogStream()
 
+#define printVar(x) console_log << ##x << " : " << x << "\n";
+
+#define print(x)    console_log << x << "\n";
 
 #endif
 

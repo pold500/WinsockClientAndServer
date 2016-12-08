@@ -12,7 +12,7 @@ bool Helpers::ListInterval::parse(const std::string& input)
 		const auto string_vertices_list = Helpers::split(input, ",");
 		for (const auto stringIndex : string_vertices_list)
 		{
-			vertices_list.push_back(std::stoi(stringIndex));
+			polygons_list.push_back(std::stoi(stringIndex));
 		}
 		m_isList = true;
 	}
@@ -24,11 +24,14 @@ bool Helpers::ListInterval::parse(const std::string& input)
 			//wrong format
 			return false;
 		}
-		vertices_range[0] = std::stoi(str_vertices_range.at(0));
-		vertices_range[1] = std::stoi(str_vertices_range.at(1));
+		polygons_range.lower_bound = std::stoi(str_vertices_range.at(0));
+		polygons_range.upper_bound = std::stoi(str_vertices_range.at(1));
 		m_isList = false;
 	}
-	else return false;
+	else
+	{
+		return false;
+	}
 
 	return validate();
 }

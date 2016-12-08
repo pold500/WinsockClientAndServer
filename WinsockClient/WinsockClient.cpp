@@ -1,12 +1,19 @@
 // WinsockClient.cpp : Defines the entry point for the console application.
 //
+#pragma warning( push )
+#pragma warning( disable : 4101)
+#pragma warning( disable : 4003)
 #include "stdafx.h"
 #include "Helpers.h"
+#include "GeometryStructures.h"
+#include <boost/algorithm/string.hpp>
 
 // Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
+
+
 
 #define DEFAULT_BUFLEN 512
 #define DEFAULT_PORT "27015"
@@ -131,7 +138,10 @@ int main(int argc, char **argv)
 				const auto rcvdPacket = Helpers::receivePacket(ConnectSocket);
 				std::cout << "Server response: \n";
 				std::cout << rcvdPacket << std::endl;
-				auto cmd_tokens = Helpers::split(userCmd, ' ');
+				
+				std::vector<std::string> cmd_tokens;
+				boost::split(cmd_tokens, userCmd, boost::is_any_of(" "));
+				
 				if (cmd_tokens.size() >= 2 && cmd_tokens[0] == "get" && cmd_tokens[1] == "polygons")
 				{
 					std::stringstream str_stream;
@@ -139,10 +149,8 @@ int main(int argc, char **argv)
 					cereal::BinaryInputArchive inputArchive(str_stream);
 					ObjFileData fd;
 					fd.load(inputArchive);
-					cereal::JSONOutputArchive jsonOutputArchive(str_stream);
-					fd.save(jsonOutputArchive);
-					std::cout << str_stream.str();
-					std::cout << "\n";
+					std::cout << str_stream.str() << "\n";
+					fd.debugPrint();
 				}
 				//writeReponseToFile(rcvdPacket);
 			}
@@ -151,7 +159,6 @@ int main(int argc, char **argv)
 				std::cout << "Client caught an exception : " << ex.what() << "\n";
 				std::cin.get();
 			}
-			
 		}
 	}
 	

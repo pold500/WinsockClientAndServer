@@ -8,7 +8,7 @@ class SendGeometryCmd: public UserCommand
 {
 	SOCKET m_socket; 
 	ObjFileData m_objectData;
-	Helpers::ListInterval m_list;
+	Helpers::ListInterval m_cmdParameters;
 public:
 	SendGeometryCmd(const SOCKET socket, const ObjFileData& objectData, const Helpers::ListInterval& list);
 	virtual void execute() override;

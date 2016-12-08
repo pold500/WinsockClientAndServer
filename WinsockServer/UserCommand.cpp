@@ -24,9 +24,9 @@
 //}
 
 std::unique_ptr<UserCommand> createListFilesCommand(const SOCKET socket, 
-	const std::vector<std::string>& fileNames)
+	const std::vector<std::string>& fileNames, const std::vector<size_t>& polyCountVector)
 {
-	return std::make_unique<ListFilesUserCommand>(socket, fileNames);
+	return std::make_unique<ListFilesUserCommand>(socket, fileNames, polyCountVector);
 }
 
 std::unique_ptr<UserCommand> createSendCommandListCommand(const SOCKET socket, 

@@ -5,6 +5,7 @@
 #include "Helpers.h"
 #include <sstream>
 
+#include <boost/algorithm/string.hpp>
 
 
 size_t Helpers::readSizePacket(const std::string& sizePacket)
@@ -119,34 +120,16 @@ std::string Helpers::receivePacket(const SOCKET ClientSocket)
 
 std::vector<std::string> Helpers::split(const std::string & s, const char delim) 
 {
-	std::vector<std::string> elems;
-	std::stringstream ss;
-	ss.str(s);
-	std::string item;
-	while (std::getline(ss, item, delim)) {
-		elems.push_back(item);
-	}
-	return elems;
+	std::string delimeters;
+	delimeters += delim;
+	return Helpers::split(s, delimeters);
 }
-
-
 
 std::vector<std::string> Helpers::split(const std::string & str, const std::string& delimiter)
 {
-	std::vector<std::string> elems;
-	std::string s = str;
-	size_t pos = 0;
-	std::string token;
-	if (s.find(delimiter) == std::string::npos)
-	{
-		elems.push_back(str);
-	}
-	while ((pos = s.find(delimiter)) != std::string::npos) {
-		token = s.substr(0, pos);
-		elems.push_back(token);
-		s.erase(0, pos + delimiter.length());
-	}
-	return std::move(elems);
+	std::vector<std::string> splitResult;
+	boost::split(splitResult, str, boost::is_any_of(delimiter));
+	return std::move(splitResult);
 }
 
 LogStream::LogStream() : myStream(&std::cout)

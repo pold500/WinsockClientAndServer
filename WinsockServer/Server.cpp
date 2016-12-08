@@ -1,4 +1,8 @@
 #include "stdafx.h"
+#pragma warning( push )
+#pragma warning( disable : 4101)
+#pragma warning( disable : 4003)
+
 #include "Server.h"
 #include "WSASocket.h"
 #include "Helpers.h"
@@ -50,11 +54,26 @@ std::vector<std::string> Server::getFileNames() const
 	}
 	return m_fileNames;
 }
+
+std::vector<size_t> Server::getPolyCount() const
+{
+	if (m_filePolyCount.empty())
+	{
+		m_filePolyCount.reserve(m_objFilesMap.size());
+		for (auto object :  m_objFilesMap)
+		{
+			m_filePolyCount.push_back(object.second.m_polygons.size());
+		}
+	}
+	return m_filePolyCount;
+}
+
+
 std::unique_ptr<UserCommand> Server::parseUserCmd(const std::string& user_input, const SOCKET socket)
 {
 		
 	if (user_input.empty())
-		return createListFilesCommand(socket, getFileNames());
+		return createListFilesCommand(socket, getFileNames(), getPolyCount());
 
 	std::vector<std::string> cmd_tokens = Helpers::split(user_input, " ");
 	if (cmd_tokens[0] == "getlargefile")
@@ -63,7 +82,7 @@ std::unique_ptr<UserCommand> Server::parseUserCmd(const std::string& user_input,
 	}
 	if (cmd_tokens[0] == "list")
 	{
-		return createListFilesCommand(socket, getFileNames());
+		return createListFilesCommand(socket, getFileNames(), getPolyCount());
 	}
 	if (cmd_tokens[0] == "get")
 	{
@@ -71,27 +90,27 @@ std::unique_ptr<UserCommand> Server::parseUserCmd(const std::string& user_input,
 		//get polygons model_name.obj 1,2,3,12
 		//or
 		//get polygons model_name.obj 1..12
-		//if (cmd_tokens.size() > 3)
+		const size_t cmd_params_count = 4;
+		if (cmd_tokens.size() == cmd_params_count)
 		{
-			//if (cmd_tokens[1] == "polygons")
+			if (cmd_tokens[1] == "polygons")
 			{
-				//const std::string model_name = cmd_tokens[2];
-				const std::string model_name = "cornell_box.obj";
-				//const std::string listOrInterval = cmd_tokens[3];
-				//if (!model_name.empty() && !listOrInterval.empty())
+				const std::string model_name = cmd_tokens[2];
+				//const std::string model_name = "cornell_box.obj";
+				const std::string listOrInterval = cmd_tokens[3];
+				if (!model_name.empty() && !listOrInterval.empty())
 				{
 					Helpers::ListInterval listInterval;
-					//if (listInterval.parse(listOrInterval))
+					if (listInterval.parse(listOrInterval))
 					{
 						return createSendGeometryCommand(socket, m_objFilesMap, model_name, listInterval);
 					}
+					else
+					{
+						return createGetGeometrySendProperFormat(socket);
+					}
 				}
 			}
-		}
-		//else
-		{
-			//wrong cmd format: forgot to specify parameters
-			return createGetGeometrySendProperFormat(socket);
 		}
 	}
 

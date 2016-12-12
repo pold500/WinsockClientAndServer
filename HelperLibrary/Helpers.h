@@ -10,6 +10,7 @@
 #include <iostream>
 #include "LogStream.h"
 #include "base64_default_rfc4648.hpp"
+#include <boost/optional.hpp>
 
 namespace Helpers
 {
@@ -24,10 +25,19 @@ namespace Helpers
 	{
 		T m_socket;
 	public:
-		Socket() : m_socket(::INVALID_SOCKET) {}
+		Socket() : m_socket(INVALID_SOCKET) {}
 		Socket(const T& socket) : m_socket(socket)
 		{
 
+		}
+		Socket<T> operator=(const Socket<T>& _socket)
+		{
+			this->m_socket = _socket.getSocket();
+			return *this;
+		}
+		Socket(const Socket<T>& _socket)
+		{
+			this->m_socket = _socket.getSocket();
 		}
 		~Socket()
 		{
@@ -39,7 +49,7 @@ namespace Helpers
 			return m_socket;
 		}
 		operator T&() { return m_socket; }
-		operator T() const { return m_socket; }
+		operator const T&() const { return m_socket; }
 	};
 	size_t readSizePacket(const std::string& sizePacket);
 	std::string createSizePacket(const size_t user_packet_size);
@@ -59,45 +69,42 @@ namespace Helpers
 	}
 	std::vector<std::string> split(const std::string & s, const char delim);
 	std::vector<std::string> split(const std::string &s, const std::string& delim);
+	
 
-	struct ListInterval
+
+	struct PolygonCmd
 	{
-		std::vector<int> polygons_list;
-		struct _polygons_range
+		static PolygonCmd invalidCmd;
+		PolygonCmd() {}
+		struct PolygonList
+		{
+			std::vector<int> polygons_list;
+		};
+		struct PolygonRange
 		{
 			size_t lower_bound;
 			size_t upper_bound;
-			_polygons_range():
+			PolygonRange() :
 				lower_bound(-1),
 				upper_bound(-1)
 			{
 
 			}
-		} 
-		polygons_range;
-
-		bool m_isList;
-		ListInterval() : m_isList(false) {}
-		bool validate() const
+		};
+		std::string file_name; //file name to load geometry from
+		PolygonList polyList;
+		PolygonRange polyRange;
+		enum class Type
 		{
-			if (m_isList)
-			{
-				return !polygons_list.empty();
-			}
-			//Check range if it's range
-			//in vertices range we can't have range lower border be higher then higher border
-			else
-			{
-				return 
-					(polygons_range.lower_bound < polygons_range.upper_bound) && 
-					(polygons_range.lower_bound != -1 || 
-					 polygons_range.upper_bound != -1 ||
-					polygons_range.lower_bound != polygons_range.upper_bound);
-			}
-		}
-		bool parse(const std::string& input); 
+			List,
+			Interval
+		};
+		bool isInvalid;
+		Type parameters_type;
+		PolygonCmd(bool _isInvalid) : isInvalid(_isInvalid) {}
 	};
 
+	boost::optional<PolygonCmd> parsePolygonCmd(const std::vector<std::string>& command_tokens);
 	
 };
 

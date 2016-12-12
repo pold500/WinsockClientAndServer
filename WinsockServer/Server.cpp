@@ -10,12 +10,13 @@
 #include "UserCommand.h"
 #include <array>
 #include "GeometryStructures.h"
+#include "CmdFabrique.h"
 
 namespace fs = std::experimental::filesystem;
 
 const int DEFAULT_BUFLEN = 2 << 9;
 
-std::vector<Polygon3D> GetPolygonsFromShape(const tinyobj::shape_t& shape, const tinyobj::attrib_t& attrib);
+
 
 
 Server::Server(WSASocketC* wsaSocket):
@@ -91,25 +92,12 @@ std::unique_ptr<UserCommand> Server::parseUserCmd(const std::string& user_input,
 		//or
 		//get polygons model_name.obj 1..12
 		const size_t cmd_params_count = 4;
-		if (cmd_tokens.size() == cmd_params_count)
+		if (cmd_tokens.size() == cmd_params_count && cmd_tokens[1] == "polygons")
 		{
-			if (cmd_tokens[1] == "polygons")
+			auto polygonCmd = Helpers::parsePolygonCmd(cmd_tokens);
+			if (polygonCmd.is_initialized())
 			{
-				const std::string model_name = cmd_tokens[2];
-				//const std::string model_name = "cornell_box.obj";
-				const std::string listOrInterval = cmd_tokens[3];
-				if (!model_name.empty() && !listOrInterval.empty())
-				{
-					Helpers::ListInterval listInterval;
-					if (listInterval.parse(listOrInterval))
-					{
-						return createSendGeometryCommand(socket, m_objFilesMap, model_name, listInterval);
-					}
-					else
-					{
-						return createGetGeometrySendProperFormat(socket);
-					}
-				}
+				return createSendGeometryCommand(socket, m_objFilesMap, cmd_tokens[2], *polygonCmd);
 			}
 		}
 	}
@@ -161,24 +149,32 @@ void Server::Update()
 	m_clientProcessingThreads.push_back(thread_ptr(new std::thread(threadFunc), func_thread_deleter));
 }
 
-std::vector<Polygon3D> GetPolygonsFromShape(const tinyobj::shape_t& shape, const tinyobj::attrib_t& attrib)
+std::vector<Polygon3D> GetPolygonsFromShapes(const std::vector<tinyobj::shape_t>& shapesVector, 
+											 const tinyobj::attrib_t& attrib)
 {
 	std::vector<Polygon3D> polygonVector;
-	const size_t number_of_polygons = shape.mesh.num_face_vertices.size();
-	polygonVector.reserve(number_of_polygons);
-	const size_t vertices_count_in_polygon = 3; //always 3 for triangulated model. and we have triangulated.
-	for (size_t polyId = 0; polyId < number_of_polygons; polyId++)
+	size_t total_number_of_polygons = 0;
+	
+	for (const auto& shape : shapesVector)
 	{
-		Polygon3D polygon(polyId);
-		for (size_t i = 0; i < vertices_count_in_polygon; i++)
+		const size_t polygons_count_in_shape = shape.mesh.num_face_vertices.size();
+		
+		//polygonVector.reserve(polygons_count_in_shape);
+		const size_t vertices_count_in_polygon = 3; //always 3 for triangulated model. and we have triangulated.
+		for (size_t polyId = 0; polyId < polygons_count_in_shape; polyId++)
 		{
-			Point3D<float> vertex;
-			vertex.x = attrib.vertices[shape.mesh.indices[polyId].vertex_index];
-			vertex.y = attrib.vertices[shape.mesh.indices[polyId + 1].vertex_index];
-			vertex.z = attrib.vertices[shape.mesh.indices[polyId + 2].vertex_index];
-			polygon.m_polygonVertices[i] = vertex;
+			Polygon3D polygon(total_number_of_polygons + polyId);
+			for (size_t i = 0; i < vertices_count_in_polygon; i++)
+			{
+				Point3D<float> vertex;
+				vertex.x = attrib.vertices[shape.mesh.indices[polyId].vertex_index];
+				vertex.y = attrib.vertices[shape.mesh.indices[polyId + 1].vertex_index];
+				vertex.z = attrib.vertices[shape.mesh.indices[polyId + 2].vertex_index];
+				polygon.m_polygonVertices[i] = vertex;
+			}
+			polygonVector.push_back(polygon);
 		}
-		polygonVector.push_back(polygon);
+		total_number_of_polygons += polygons_count_in_shape;
 	}
 	return polygonVector;
 }
@@ -222,9 +218,10 @@ std::unique_ptr<ObjFileData> Server::loadAndParseObjectFile(const char * filenam
 
 	if (ret)
 	{
-		auto polygons = GetPolygonsFromShape(shapes[0], attributes);
-		auto objFileData = std::make_unique<ObjFileData>(filename, polygons);
-		//objFileData->m_shapes = shapes;
+		auto polygons = GetPolygonsFromShapes(shapes, attributes);
+		fs::path p(filename);
+		
+		auto objFileData = std::make_unique<ObjFileData>(p.filename().string(), polygons);
 		return objFileData;
 	}
 	return nullptr;
@@ -252,7 +249,6 @@ void Server::loadObjFiles()
 	else
 	{
 		console_log << "Path to obj files is wrong! Terminating. Path searched was: " << loadPath.string() << "\n";
-		std::abort();
 	}
 	//Then load them and parse their geometry
 	for (const auto& filePath : m_objectFilesPathNamePairs)

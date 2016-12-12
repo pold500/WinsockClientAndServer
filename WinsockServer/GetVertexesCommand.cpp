@@ -1,11 +1,16 @@
 #include "stdafx.h"
 #include "GetVertexesCommand.h"
+#include "GeometryStructures.h"
 
-SendGeometryCmd::SendGeometryCmd(const SOCKET socket, const ObjFileData& objectData,
-	const Helpers::ListInterval& list) :
+#include "cereal/archives/binary.hpp"
+
+
+SendGeometryCmd::SendGeometryCmd(const SOCKET socket, const ObjFileData& objectData, 
+	const Helpers::PolygonCmd& polygonCmd
+	) :
 	m_socket(socket),
 	m_objectData(objectData),
-	m_cmdParameters(list)
+	m_cmdParameters(polygonCmd)
 {
 }
  
@@ -16,9 +21,9 @@ void SendGeometryCmd::execute()
 	fileDataToSend.m_object_name = m_objectData.m_object_name;
 	auto& polygonsToReturn = fileDataToSend.m_polygons;
 
-	if (m_cmdParameters.m_isList)
+	if (m_cmdParameters.polyList.polygons_list.size())
 	{
-		for(auto polygonIndex : m_cmdParameters.polygons_list)
+		for(auto polygonIndex : m_cmdParameters.polyList.polygons_list)
 		{
 			if ((size_t)polygonIndex < m_objectData.m_polygons.size())
 			{
@@ -28,16 +33,20 @@ void SendGeometryCmd::execute()
 	}
 	else
 	{
-		const size_t lower_bound = m_cmdParameters.polygons_range.lower_bound;
-		const size_t upper_bound = m_cmdParameters.polygons_range.upper_bound;
-		if (lower_bound == -1 || upper_bound == -1 || lower_bound == m_objectData.m_polygons.size() ||
-			upper_bound == m_objectData.m_polygons.size() || lower_bound == upper_bound)
+		const size_t lower_bound = m_cmdParameters.polyRange.lower_bound;
+		const size_t upper_bound = m_cmdParameters.polyRange.upper_bound;
+		if ( //lower_bound == -1 || upper_bound == -1 ||
+			 lower_bound >= m_objectData.m_polygons.size() ||
+			 upper_bound >= m_objectData.m_polygons.size() ||
+			 lower_bound == upper_bound )
 		{
 			console_log << "failed to parse user range. \n";
+			Helpers::sendPacket(m_socket, "error: Wrong range! Specify range carefully.");
 			return;
 		}
+		const size_t validated_upper_bound = std::min(upper_bound, m_objectData.m_polygons.size());
 		polygonsToReturn.insert(end(polygonsToReturn), begin(m_objectData.m_polygons) + lower_bound, 
-				begin(m_objectData.m_polygons) + upper_bound);
+				begin(m_objectData.m_polygons) + validated_upper_bound + 1);
 	}
 
 	std::stringstream str_stream;

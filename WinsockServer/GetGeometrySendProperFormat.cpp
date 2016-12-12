@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GetGeometrySendProperFormat.h"
-
+#include "Helpers.h"
 
 GetGeometrySendProperFormat::GetGeometrySendProperFormat(SOCKET socket)
 	: m_socket(socket)

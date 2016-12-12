@@ -1,4 +1,4 @@
-#ifndef GeometryStructures_h__
+﻿#ifndef GeometryStructures_h__
 #define GeometryStructures_h__
 
 #include <vector>
@@ -35,14 +35,28 @@ struct Point3D
 		printVar(y);
 		printVar(z);
 	}
+	
 };
+template<class T>
+static bool operator<(const Point3D<T>& lhs, const Point3D<T>& rhs)
+{
+	// sqrt( x2 + y2 )
+	return (lhs.x != rhs.x) || (lhs.y != rhs.y) || (lhs.z != rhs.z);
+}
+
+template<class T>
+static bool operator==(const Point3D<T>& lhs, const Point3D<T>& rhs)
+{
+	// sqrt( x2 + y2 )
+	return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z);
+}
 
 struct Polygon3D
 {
 	std::array<Point3D<float>, 3> m_polygonVertices; //for triangulated model only
 	size_t m_polyIndex;
 	Polygon3D() {}
-	Polygon3D(size_t polyIndex) : m_polyIndex(polyIndex) {}
+	Polygon3D(size_t polyIndex) : m_polyIndex(polyIndex), m_polygonVertices({}) {}
 
 	template<class Archive>
 	void serialize(Archive & archive)
@@ -66,7 +80,7 @@ struct Polygon3D
 struct ObjFileData {
 	std::vector<Polygon3D> m_polygons;
 	std::string m_object_name;
-	ObjFileData() {}
+	inline ObjFileData() {}
 	ObjFileData(const std::string& object_name, const std::vector<Polygon3D>& polygons):
 		m_object_name(object_name),
 		m_polygons(polygons)

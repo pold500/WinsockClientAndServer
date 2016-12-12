@@ -1,17 +1,17 @@
-#pragma once
 #ifndef GetVertexesCommand_h__
 #define GetVertexesCommand_h__
 #include "UserCommand.h"
 #include "Helpers.h"
+#include "GeometryStructures.h"
 
 class SendGeometryCmd: public UserCommand
 {
 	SOCKET m_socket; 
 	ObjFileData m_objectData;
-	Helpers::ListInterval m_cmdParameters;
+	Helpers::PolygonCmd m_cmdParameters;
 public:
-	SendGeometryCmd(const SOCKET socket, const ObjFileData& objectData, const Helpers::ListInterval& list);
-	virtual void execute() override;
+	SendGeometryCmd(const SOCKET socket, const ObjFileData& objectData, const Helpers::PolygonCmd& polygonCmd);
+	virtual void execute();
 
 };
 

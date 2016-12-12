@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Helpers.h"
 #include "SendLargeFileCmd.h"
 #include <fstream>
 

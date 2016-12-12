@@ -35,10 +35,10 @@ std::unique_ptr<UserCommand> createSendCommandListCommand(const SOCKET socket,
 	return std::make_unique<UserCommandNoOperation>(socket);
 }
 
-std::unique_ptr<UserCommand> createSendGeometryCommand(const SOCKET socket, const ObjFileDataMap& objectsData,
-	const std::string& object_name, const Helpers::ListInterval& listInterval)
+
+std::unique_ptr<UserCommand> createSendGeometryCommand(const SOCKET socket, const ObjFileDataMap& objectsData, const std::string& object_name, const Helpers::PolygonCmd& cmdParams)
 {
-	return std::make_unique<SendGeometryCmd>(socket, (*objectsData.find(object_name)).second, listInterval);
+	return std::make_unique<SendGeometryCmd>(socket, (*objectsData.find(object_name)).second, cmdParams);
 }
 
 std::unique_ptr<UserCommand> createGetGeometrySendProperFormat(const SOCKET socket)

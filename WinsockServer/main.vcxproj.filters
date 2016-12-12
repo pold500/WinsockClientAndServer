@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\GetGeometrySendProperFormat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\SendLargeFileCmd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\UserCommandNoOperation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\GetVertexesCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\Server.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\WSASocket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\ListCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\UserCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\WinsockServerMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0C4E3777-85DE-3CA1-A5F4-8DB26FA08FEC}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

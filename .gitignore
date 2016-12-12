@@ -272,3 +272,15 @@ __pycache__/
 
 # Cake - Uncomment if you are using it
 # tools/
+
+
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+
+**/CMakeFiles/
+*.i*c

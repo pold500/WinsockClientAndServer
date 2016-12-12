@@ -14,7 +14,7 @@ void WSASocketC::initWSA()
 	addrinfo hints { 0 };
 
 	// Initialize Winsock
-	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData); 
 	if (iResult != 0) {
 		printf("WSAStartup failed with error: %d\n", iResult);
 		throw std::exception();

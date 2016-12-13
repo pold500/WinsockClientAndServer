@@ -28,14 +28,18 @@ include_directories(${helper_lib})
 include_directories(${boost_lib})
 include_directories(${cereal})
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "..\\")
+
 add_executable(Server ${cpp_files} ${header_files})	
 
 target_link_libraries(Server "..\\static_libs\\$(PlatformTarget)\\$(Configuration)\\helperslib.lib")
 
 ADD_CUSTOM_COMMAND(TARGET Server
           POST_BUILD
-		  COMMAND echo "..\\models\\"
-		  COMMAND echo "$(SolutionDir)\\$(Configuration)\\models"
-          COMMAND robocopy /s "..\\models\\" "$(SolutionDir)\\$(Configuration)\\models\\" 
+		  COMMAND echo ON
+		  COMMAND echo %cd%
+		  COMMAND cd
+		  COMMAND echo copy "..\\models\\" "$(SolutionDir)\\$(Configuration)\\models"
+          COMMAND XCOPY /E "..\\models\\*.*" "$(SolutionDir)\\$(Configuration)\\models\\" /y
 		  )
 

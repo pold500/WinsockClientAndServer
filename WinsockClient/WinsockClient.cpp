@@ -24,7 +24,7 @@ void parseCmdResponse(const std::string& userCmd, const std::string& rcvdPacket)
 {
 	std::vector<std::string> cmd_tokens;
 	boost::split(cmd_tokens, userCmd, boost::is_any_of(", "));
-
+	std::cout << rcvdPacket << "\n";
 	if (cmd_tokens.size() >= 2 && cmd_tokens[0] == "get" && cmd_tokens[1] == "polygons" &&
 		rcvdPacket.find("error") == std::string::npos) //yeah, I know it's shitty error handling mechanism.
 	{

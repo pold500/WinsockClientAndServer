@@ -48,7 +48,7 @@ boost::optional<PolygonCmd> Helpers::parsePolygonCmd(const std::vector<std::stri
 	//get polygons model_name.obj 1-5
 	bool is_number_of_tokens_correct = command_tokens.size() == 4;
 	bool is_cmd_spelled_right = command_tokens[0] == "get" && command_tokens[1] == "polygons";
-	bool is_model_name_present_and_correct = !command_tokens[2].empty() && command_tokens[2].find(".obj") != std::string::npos;
+	bool is_model_name_present_and_correct = !command_tokens[2].empty();
 	bool is_range_present = command_tokens[3].find("..") != std::string::npos;
 	bool is_list_present = command_tokens[3].find(",") != std::string::npos;
 	

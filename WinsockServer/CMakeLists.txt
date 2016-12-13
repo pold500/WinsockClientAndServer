@@ -19,7 +19,6 @@ GetVertexesCommand.h           Server.h            WSASocket.h
 set(cppcodec_dir "..\\cppcodec\\cppcodec\\")
 set(tinyobj_header_only "..\\tinyobjloader-master\\")
 set(helper_lib "..\\HelperLibrary\\")
-set(boost_lib "C:\\dev\\Libs\\boost_1_62_0\\")
 set(cereal "..\\cereal-1.2.1\\include\\")
 
 include_directories(${cppcodec_dir})			

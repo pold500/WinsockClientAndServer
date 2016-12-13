@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGUID>{FCB0C5D9-9AEF-3D84-A6E8-2C7AFF00099C}</ProjectGUID>
+    <ProjectGUID>{305DB3A2-98E9-3472-B950-9D8F7166A336}</ProjectGUID>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <Keyword>Win32Proj</Keyword>
     <Platform>Win32</Platform>
@@ -57,28 +57,28 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-    <PropertyGroup>
-      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Pavel\Desktop\WinsockClientAndServer\static_libs\$(PlatformTarget)\Debug\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">HelpersLib.dir\Debug\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">HelpersLib</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Pavel\Desktop\WinsockClientAndServer\static_libs\$(PlatformTarget)\Release\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">HelpersLib.dir\Release\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">HelpersLib</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Pavel\Desktop\WinsockClientAndServer\static_libs\$(PlatformTarget)\MinSizeRel\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">HelpersLib.dir\MinSizeRel\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">HelpersLib</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.lib</TargetExt>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Pavel\Desktop\WinsockClientAndServer\static_libs\$(PlatformTarget)\RelWithDebInfo\</OutDir>
-      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">HelpersLib.dir\RelWithDebInfo\</IntDir>
-      <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">HelpersLib</TargetName>
-      <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
-    </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Dev\tmp\SCApp\static_libs\$(PlatformTarget)\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">HelpersLib.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">HelpersLib</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Dev\tmp\SCApp\static_libs\$(PlatformTarget)\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">HelpersLib.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">HelpersLib</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Dev\tmp\SCApp\static_libs\$(PlatformTarget)\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">HelpersLib.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">HelpersLib</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.lib</TargetExt>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Dev\tmp\SCApp\static_libs\$(PlatformTarget)\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">HelpersLib.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">HelpersLib</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -95,10 +95,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -111,7 +111,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -123,14 +123,15 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat></DebugInformationFormat>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -143,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -155,14 +156,15 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat></DebugInformationFormat>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -175,7 +177,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -191,10 +193,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cppcodec\cppcodec;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Dev\tmp\SCApp\HelperLibrary\..\cppcodec\cppcodec;C:\Dev\tmp\SCApp\HelperLibrary\..\tinyobjloader-master;C:\dev\Libs\boost_1_62_0;C:\Dev\tmp\SCApp\HelperLibrary\..\cereal-1.2.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -206,10 +208,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Users/Pavel/Desktop/WinsockClientAndServer/HelperLibrary/CMakeLists.txt</Message>
+    <CustomBuild Include="C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Dev/tmp/SCApp/HelperLibrary/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/Pavel/Desktop/WinsockClientAndServer -BC:/Users/Pavel/Desktop/WinsockClientAndServer --check-stamp-file C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeFiles\generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Dev/tmp/SCApp -BC:/Dev/tmp/SCApp --check-stamp-file C:\Dev\tmp\SCApp\HelperLibrary\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -217,12 +219,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Users/Pavel/Desktop/WinsockClientAndServer/HelperLibrary/CMakeLists.txt;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Dev/tmp/SCApp/HelperLibrary/CMakeLists.txt;C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt;C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Dev\tmp\SCApp\HelperLibrary\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Users/Pavel/Desktop/WinsockClientAndServer/HelperLibrary/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Dev/tmp/SCApp/HelperLibrary/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/Pavel/Desktop/WinsockClientAndServer -BC:/Users/Pavel/Desktop/WinsockClientAndServer --check-stamp-file C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeFiles\generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Dev/tmp/SCApp -BC:/Dev/tmp/SCApp --check-stamp-file C:\Dev\tmp\SCApp\HelperLibrary\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -230,12 +232,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Users/Pavel/Desktop/WinsockClientAndServer/HelperLibrary/CMakeLists.txt;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Dev/tmp/SCApp/HelperLibrary/CMakeLists.txt;C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt;C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Dev\tmp\SCApp\HelperLibrary\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Users/Pavel/Desktop/WinsockClientAndServer/HelperLibrary/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Dev/tmp/SCApp/HelperLibrary/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/Pavel/Desktop/WinsockClientAndServer -BC:/Users/Pavel/Desktop/WinsockClientAndServer --check-stamp-file C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeFiles\generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Dev/tmp/SCApp -BC:/Dev/tmp/SCApp --check-stamp-file C:\Dev\tmp\SCApp\HelperLibrary\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -243,12 +245,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Users/Pavel/Desktop/WinsockClientAndServer/HelperLibrary/CMakeLists.txt;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Dev/tmp/SCApp/HelperLibrary/CMakeLists.txt;C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt;C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Dev\tmp\SCApp\HelperLibrary\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Users/Pavel/Desktop/WinsockClientAndServer/HelperLibrary/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Dev/tmp/SCApp/HelperLibrary/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -HC:/Users/Pavel/Desktop/WinsockClientAndServer -BC:/Users/Pavel/Desktop/WinsockClientAndServer --check-stamp-file C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeFiles\generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" -HC:/Dev/tmp/SCApp -BC:/Dev/tmp/SCApp --check-stamp-file C:\Dev\tmp\SCApp\HelperLibrary\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -256,23 +258,23 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Users/Pavel/Desktop/WinsockClientAndServer/HelperLibrary/CMakeLists.txt;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt;C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Dev/tmp/SCApp/HelperLibrary/CMakeLists.txt;C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt;C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Dev\tmp\SCApp\HelperLibrary\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\GeometryStructures.h" />
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\Helpers.h" />
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\LogStream.h" />
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\stdafx.h" />
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\targetver.h" />
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\Helpers.cpp"  />
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\stdafx.cpp"  />
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\GeometryStructures.h" />
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\Helpers.h" />
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\LogStream.h" />
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\stdafx.h" />
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\targetver.h" />
+    <ClCompile Include="C:\Dev\tmp\SCApp\HelperLibrary\Helpers.cpp" />
+    <ClCompile Include="C:\Dev\tmp\SCApp\HelperLibrary\stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:/Users/Pavel/Desktop/WinsockClientAndServer/ZERO_CHECK.vcxproj">
-      <Project>A6763D2B-32AC-346E-9ECB-B3EE09B20250</Project>
+    <ProjectReference Include="C:/Dev/tmp/SCApp/ZERO_CHECK.vcxproj">
+      <Project>AD61230B-7FF8-3B9B-86AB-984FD17EEC25</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,4 +1,7 @@
-#pragma once
+#ifndef SendLargeFileCmd_h__
+#define SendLargeFileCmd_h__
+
+
 #include "UserCommand.h"
 class SendLargeFileCmd: public UserCommand
 {
@@ -13,4 +16,5 @@ public:
 	virtual void execute() override;
 
 };
+#endif // SendLargeFileCmd_h__
 

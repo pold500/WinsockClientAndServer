@@ -1,4 +1,5 @@
-#pragma once
+#ifndef WSAClient_h__
+#define WSAClient_h__
 #include "Helpers.h"
 
 class WSAClient
@@ -9,4 +10,7 @@ public:
 	SOCKET getClientSocket();
 	~WSAClient();
 };
+
+#endif // WSAClient_h__
+
 

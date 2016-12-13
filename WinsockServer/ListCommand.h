@@ -1,16 +1,16 @@
-#pragma once
+#ifndef ListCommand_h__
+#define ListCommand_h__
 #include "UserCommand.h"
-
-class ListFilesUserCommand: public UserCommand
+class ListFilesUserCommand : public UserCommand
 {
 	struct FileList
 	{
 		std::string name;
 		size_t polygonCount;
 		FileList(const std::string& _name,
-		size_t _polygonCount):
-		name(_name),
-		polygonCount(_polygonCount)
+			size_t _polygonCount) :
+			name(_name),
+			polygonCount(_polygonCount)
 		{}
 	};
 	std::vector<FileList> m_fileList;
@@ -32,6 +32,11 @@ public:
 		}
 	}
 	virtual void execute() override;
-	
+
 };
+
+#endif // ListCommand_h__
+
+
+
 

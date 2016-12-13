@@ -3,7 +3,9 @@
 // are changed infrequently
 //
 
-#pragma once
+#ifndef stdafx_h__
+#define stdafx_h__
+
 
 #include "targetver.h"
 
@@ -26,3 +28,4 @@
 #include "base64_default_rfc4648.hpp"
 #undef max
 #undef min
+#endif // stdafx_h__

@@ -1,81 +1,81 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\GetGeometrySendProperFormat.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\GetGeometrySendProperFormat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\SendLargeFileCmd.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\SendLargeFileCmd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\UserCommandNoOperation.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\UserCommandNoOperation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\stdafx.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\GetVertexesCommand.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\GetVertexesCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\Server.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\Server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\WSASocket.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\WSASocket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\ListCommand.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\ListCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\UserCommand.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\UserCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\WinsockServerMain.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\WinsockServer\WinsockServerMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\CmdFabrique.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\CmdFabrique.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\ListCommand.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\ListCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\UserCommand.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\UserCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\stdafx.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\GetGeometrySendProperFormat.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\GetGeometrySendProperFormat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\SendLargeFileCmd.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\SendLargeFileCmd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\UserCommandNoOperation.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\UserCommandNoOperation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\targetver.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\GetVertexesCommand.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\GetVertexesCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\Server.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\Server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\WSASocket.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\WinsockServer\WSASocket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\WinsockServer\CMakeLists.txt" />
+    <CustomBuild Include="C:\Dev\tmp\SCApp\WinsockServer\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{60D0A5C4-AC5A-314D-B084-0CE192BC25A8}</UniqueIdentifier>
+      <UniqueIdentifier>{40DC216B-A70B-3E8B-8162-85AC7A4210E6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{0812338D-B8CD-3879-8A18-757AFD19152B}</UniqueIdentifier>
+      <UniqueIdentifier>{C23784DF-28DB-3D72-8AE7-B4C62E0AE295}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

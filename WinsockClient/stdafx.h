@@ -2,8 +2,8 @@
 // or project specific include files that are used frequently, but
 // are changed infrequently
 //
-
-#pragma once
+#ifndef stdafx_h__
+#define stdafx_h__
 
 #include "targetver.h"
 #define WIN32_LEAN_AND_MEAN
@@ -21,3 +21,4 @@
 #include "base64_default_rfc4648.hpp"
 
 // TODO: reference additional headers your program requires here
+#endif // stdafx_h__

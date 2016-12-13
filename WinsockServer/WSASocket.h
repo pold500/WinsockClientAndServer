@@ -1,6 +1,5 @@
 #ifndef _WSA_SOCKET_CLASS
 #define _WSA_SOCKET_CLASS
-#pragma once
 #include "Helpers.h"
 
 

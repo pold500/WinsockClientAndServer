@@ -1,4 +1,4 @@
-#pragma once
+
 #ifndef UserCommandNoOperation_h__
 #define UserCommandNoOperation_h__
 #include "UserCommand.h"

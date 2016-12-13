@@ -1,6 +1,5 @@
 #ifndef __C_SERVER_HEADER__
 #define __C_SERVER_HEADER__
-#pragma once
 #include "Helpers.h"
 #include <vector>
 #include <map>

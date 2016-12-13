@@ -1,4 +1,3 @@
-#pragma once
 #ifndef LogStream_h__
 #define LogStream_h__
 #include <mutex>

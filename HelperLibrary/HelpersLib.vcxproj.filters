@@ -1,39 +1,39 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\Helpers.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\HelperLibrary\Helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\stdafx.cpp">
+    <ClCompile Include="C:\Dev\tmp\SCApp\HelperLibrary\stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\GeometryStructures.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\GeometryStructures.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\Helpers.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\Helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\LogStream.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\LogStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\stdafx.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\targetver.h">
+    <ClInclude Include="C:\Dev\tmp\SCApp\HelperLibrary\targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\Pavel\Desktop\WinsockClientAndServer\HelperLibrary\CMakeLists.txt" />
+    <CustomBuild Include="C:\Dev\tmp\SCApp\HelperLibrary\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{60D0A5C4-AC5A-314D-B084-0CE192BC25A8}</UniqueIdentifier>
+      <UniqueIdentifier>{40DC216B-A70B-3E8B-8162-85AC7A4210E6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{0812338D-B8CD-3879-8A18-757AFD19152B}</UniqueIdentifier>
+      <UniqueIdentifier>{C23784DF-28DB-3D72-8AE7-B4C62E0AE295}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

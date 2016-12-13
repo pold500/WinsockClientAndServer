@@ -17,8 +17,6 @@ namespace fs = std::experimental::filesystem;
 const int DEFAULT_BUFLEN = 2 << 9;
 
 
-
-
 Server::Server(WSASocketC* wsaSocket):
 	m_wsaSocket(wsaSocket),
 	m_listenSocket(wsaSocket->createListenSocket())
@@ -26,22 +24,6 @@ Server::Server(WSASocketC* wsaSocket):
 	loadObjFiles();
 }
 
-//struct UserCmd
-//{
-//	enum class UserCmdType
-//	{
-//		List,
-//		GetPolygons,
-//		Unknown
-//	};
-//	UserCmdType type;
-//	std::vector<std::string> parameters;
-//	UserCmd(): type (UserCmdType::Unknown){}
-//	inline UserCmdType GetType() const { return type; }
-//};
-
-
-//Отправлять надо список вершин и список полигонов, это стандартная схема для хранения простой 3D модели.
 std::vector<std::string> Server::getFileNames() const
 {
 	if (m_fileNames.empty())
@@ -87,10 +69,6 @@ std::unique_ptr<UserCommand> Server::parseUserCmd(const std::string& user_input,
 	}
 	if (cmd_tokens[0] == "get")
 	{
-		//cmd example:
-		//get polygons model_name.obj 1,2,3,12
-		//or
-		//get polygons model_name.obj 1..12
 		const size_t cmd_params_count = 4;
 		if (cmd_tokens.size() == cmd_params_count && cmd_tokens[1] == "polygons")
 		{
@@ -249,6 +227,7 @@ void Server::loadObjFiles()
 	else
 	{
 		console_log << "Path to obj files is wrong! Terminating. Path searched was: " << loadPath.string() << "\n";
+		std::exit(-1);
 	}
 	//Then load them and parse their geometry
 	for (const auto& filePath : m_objectFilesPathNamePairs)

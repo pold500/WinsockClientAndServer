@@ -86,18 +86,14 @@ int main(int argc, char **argv)
 				std::cout << "User request is : \"" << userCmd << "\"\n";
 
 				const auto rcvdPacket = Helpers::receivePacket(ConnectionSocket);
-				//std::cout << "Server response: \n";
-				//std::cout << rcvdPacket << std::endl;
 				
 				parseCmdResponse(userCmd, rcvdPacket);
-				//writeReponseToFile(rcvdPacket);
+				
 			}
 			catch (const std::exception& ex)
 			{
 				std::cout << "Client caught an exception : " << ex.what() << "\n";
-				std::cin.get();
 			}
-			
 		}
 	}
 

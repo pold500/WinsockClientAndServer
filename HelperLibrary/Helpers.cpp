@@ -34,7 +34,10 @@ boost::optional<PolygonCmd::PolygonList> tryToParseList(const std::string& range
 		PolygonCmd::PolygonList polyList;
 		for (const auto& listValue : listValues)
 		{
-			polyList.polygons_list.push_back(std::stoi(listValue));
+			if (!listValue.empty())
+			{
+				polyList.polygons_list.push_back(std::stoi(listValue));
+			}
 		}
 		return polyList;
 	}

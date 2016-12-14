@@ -227,6 +227,7 @@ void Server::loadObjFiles()
 	else
 	{
 		console_log << "Path to obj files is wrong! Terminating. Path searched was: " << loadPath.string() << "\n";
+		std::getchar();
 		std::exit(-1);
 	}
 	//Then load them and parse their geometry

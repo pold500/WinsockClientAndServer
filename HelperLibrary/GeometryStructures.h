@@ -35,7 +35,15 @@ struct Point3D
 		printVar(y);
 		printVar(z);
 	}
-	
+	std::string toString() const
+	{
+		std::stringstream result;
+		result << "Point3D \n";
+		result << (x) << "\n";
+		result << (y) << "\n";
+		result << (z) << "\n";
+		return result.str();
+	}
 };
 template<class T>
 static bool operator<(const Point3D<T>& lhs, const Point3D<T>& rhs)
@@ -65,6 +73,17 @@ struct Polygon3D
 		archive(m_polygonVertices[0]);
 		archive(m_polygonVertices[1]);
 		archive(m_polygonVertices[2]);
+	}
+	std::string toString() const
+	{
+		std::stringstream result;
+		result << "Polygon3D \n";
+		result << "polyIndex " << m_polyIndex << "\n";
+		for (const auto& vertex : m_polygonVertices)
+		{
+			result << vertex.toString() << "\n";
+		} 
+		return result.str();
 	}
 	void debugPrint() const
 	{

@@ -20,37 +20,6 @@ void writeReponseToFile(const std::string& response)
 	out.close();
 }
 
-void parseCmdResponse(const std::string& userCmd, const std::string& rcvdPacket)
-{
-	std::vector<std::string> cmd_tokens;
-	boost::split(cmd_tokens, userCmd, boost::is_any_of(", "));
-	std::cout << rcvdPacket << "\n";
-	if (cmd_tokens.size() >= 2 && cmd_tokens[0] == "get" && cmd_tokens[1] == "polygons" &&
-		rcvdPacket.find("error") == std::string::npos) //yeah, I know it's shitty error handling mechanism.
-	{
-		std::stringstream str_stream;
-		str_stream << rcvdPacket;
-		cereal::BinaryInputArchive inputArchive(str_stream);
-		ObjFileData fd;
-		fd.load(inputArchive);
-		//std::cout << str_stream.str() << "\n";
-		std::vector<Point3D<float>> unique_vertices;
-		for (auto poly : fd.m_polygons)
-		{
-			for (auto vertex : poly.m_polygonVertices)
-			{
-				if (std::find(begin(unique_vertices), end(unique_vertices), vertex) == end(unique_vertices))
-					unique_vertices.push_back(vertex);
-			}
-		}
-		fd.debugPrint();
-	}
-	else
-	{
-		std::cout << "Server response: \n" << rcvdPacket << "\n";
-	}
-}
-
 int main(int argc, char **argv)
 {
 	std::cout << "Client started \n";
@@ -87,8 +56,7 @@ int main(int argc, char **argv)
 
 				const auto rcvdPacket = Helpers::receivePacket(ConnectionSocket);
 				
-				parseCmdResponse(userCmd, rcvdPacket);
-				
+				std::cout << rcvdPacket << std::endl;
 			}
 			catch (const std::exception& ex)
 			{
@@ -96,9 +64,6 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-
-	std::string a;
-	std::cin >> a;
 
 	return 0;
 }

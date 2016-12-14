@@ -35,8 +35,7 @@ void SendGeometryCmd::execute()
 	{
 		const size_t lower_bound = m_cmdParameters.polyRange.lower_bound;
 		const size_t upper_bound = m_cmdParameters.polyRange.upper_bound;
-		if ( //lower_bound == -1 || upper_bound == -1 ||
-			 lower_bound >= m_objectData.m_polygons.size() ||
+		if ( lower_bound >= m_objectData.m_polygons.size() ||
 			 upper_bound >= m_objectData.m_polygons.size() ||
 			 lower_bound == upper_bound )
 		{
@@ -47,10 +46,11 @@ void SendGeometryCmd::execute()
 		const size_t validated_upper_bound = std::min(upper_bound, m_objectData.m_polygons.size());
 		polygonsToReturn.insert(end(polygonsToReturn), begin(m_objectData.m_polygons) + lower_bound, 
 				begin(m_objectData.m_polygons) + validated_upper_bound + 1);
-	}
-
+	} 
 	std::stringstream str_stream;
-	cereal::BinaryOutputArchive outputArchive(str_stream);
-	fileDataToSend.save(outputArchive);
+	for (const auto& polygon : polygonsToReturn)
+	{
+		str_stream << polygon.toString() << "\n";
+	}
 	Helpers::sendPacket(m_socket, str_stream.str());
 }

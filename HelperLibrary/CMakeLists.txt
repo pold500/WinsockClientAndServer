@@ -11,9 +11,7 @@ SET(header_files
 GeometryStructures.h  Helpers.h  LogStream.h  stdafx.h  targetver.h
 )
 
-set(cppcodec_dir "..\\cppcodec\\cppcodec\\")
-set(tinyobj_header_only "..\\tinyobjloader-master\\")
-set(cereal "..\\cereal-1.2.1\\include\\")
+
 
 include_directories(${cppcodec_dir})			
 include_directories(${tinyobj_header_only})

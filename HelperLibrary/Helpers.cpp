@@ -159,26 +159,30 @@ void Helpers::sendPacket(const SOCKET ClientSocket, const std::string& data)
 	console_log << "Total bytes sent: " << totalBytesSent << "\n";
 }
 
-std::string Helpers::receivePacket(const SOCKET ClientSocket)
+boost::optional<std::string> Helpers::receivePacket(const SOCKET ClientSocket)
 {
 	std::string full_message;
 	size_t totalBytesRead = 0;
 	size_t packetSize = -1;
 	const size_t packet_length_size = calculatePacketLengthPrefix<size_t>();
 	const size_t BUFLEN = 4096;
+	size_t rcvFailed = 0;
+	const size_t rcvTries = 3;
 	while (totalBytesRead < packetSize)
 	{
 		std::string recvbuf;
 		recvbuf.resize(BUFLEN);
 		const int rcvdBytesCount = ::recv(ClientSocket, &recvbuf[0], /*recvbuf.size()*/BUFLEN, 0);
-		if (!rcvdBytesCount)
-			continue;
-
-		if (WSAGetLastError() != 0 || rcvdBytesCount == INVALID_SOCKET)
+		if (!rcvdBytesCount && rcvFailed < rcvTries)
 		{
-			console_log << "recv failed with error: " << WSAGetLastError();
-			int error_code = WSAGetLastError();
-			throw std::exception((std::string("socket error ") + std::to_string(WSAGetLastError())).c_str());
+			rcvFailed++;
+			continue;
+		}
+
+		if (WSAGetLastError() != 0 || rcvdBytesCount == INVALID_SOCKET || rcvFailed >= rcvTries)
+		{
+			console_log << "recv failed with error: " << WSAGetLastError() << "\n";
+			return boost::optional<std::string>();
 		}
 
 		totalBytesRead += rcvdBytesCount;

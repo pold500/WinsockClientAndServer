@@ -7,7 +7,6 @@
 #include <boost/algorithm/string.hpp>
 #include <set>
 
-// Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
 #pragma comment (lib, "AdvApi32.lib")
@@ -20,49 +19,51 @@ void writeReponseToFile(const std::string& response)
 	out.close();
 }
 
-int main(int argc, char **argv)
+auto getCmd = []()->std::string
 {
-	std::cout << "Client started \n";
-	auto getCmd = []()->std::string
-	{
-		std::string str;
-		std::getline(std::cin, str);
-		return str;
-	};
-	
-	WSAClient client;
+	std::string str;
+	std::getline(std::cin, str);
+	return str;
+};
 
-	const Helpers::Socket<SOCKET> ConnectionSocket = client.getClientSocket();
-
-	if (ConnectionSocket == INVALID_SOCKET)
-	{
-		std::cout << "Please run a server first \n";
-		std::cout << "Press any key to close \n";
-		std::cin.get();
-		return -1;
-	}
-
+bool updateTask(SOCKET ConnectionSocket)
+{
 	while (true)
 	{
 		std::cout << "Please enter your command: \n";
-		const auto userCmd = getCmd();//std::string("get polygons cube.obj 0,1,2,3,4,5,6,7,8,9,10,11,12");//getCmd();
+		const auto userCmd = getCmd();
 		if (!userCmd.empty())
 		{
-			
-			try 
+			try
 			{
 				Helpers::sendPacket(ConnectionSocket, userCmd);
 				std::cout << "User request is : \"" << userCmd << "\"\n";
-
 				const auto rcvdPacket = Helpers::receivePacket(ConnectionSocket);
-				
-				std::cout << rcvdPacket << std::endl;
+				if (!rcvdPacket.is_initialized())
+				{
+					return false;
+				}
+				std::cout << *rcvdPacket << std::endl;
 			}
 			catch (const std::exception& ex)
 			{
 				std::cout << "Client caught an exception : " << ex.what() << "\n";
 			}
 		}
+	}
+}
+
+int main(int argc, char **argv)
+{
+	std::cout << "Client started \n";
+	
+	WSAClient client;
+
+	//const Helpers::Socket<SOCKET> ConnectionSocket = client.getClientSocket();
+
+	while(const Helpers::Socket<SOCKET> ConnectionSocket = client.getClientSocket())
+	{
+		while (updateTask(ConnectionSocket.getSocket()));
 	}
 
 	return 0;

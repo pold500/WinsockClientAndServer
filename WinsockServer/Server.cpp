@@ -94,9 +94,18 @@ void Server::processClientFunction(const SOCKET _clientSocket, const int threadC
 		//Analyze command
 		try 
 		{
-			const std::string client_request = Helpers::receivePacket(ClientSocket.getSocket());
-			auto user_command = parseUserCmd(client_request, ClientSocket.getSocket());
-			user_command->execute();
+			const auto client_request = Helpers::receivePacket(ClientSocket.getSocket());
+			if (client_request.is_initialized())
+			{
+				auto user_command = parseUserCmd(*client_request, ClientSocket.getSocket());
+				user_command->execute();
+			}
+			else
+			{
+				//terminate thread
+				console_log << "Client thread listen cycle terminated. \n";
+				break;
+			}
 		}
 		catch (std::exception& ex)
 		{

@@ -20,7 +20,7 @@ void SendGeometryCmd::execute()
 	ObjFileData fileDataToSend;
 	fileDataToSend.m_object_name = m_objectData.m_object_name;
 	auto& polygonsToReturn = fileDataToSend.m_polygons;
-
+	
 	if (m_cmdParameters.polyList.polygons_list.size())
 	{
 		for(auto polygonIndex : m_cmdParameters.polyList.polygons_list)
@@ -31,7 +31,7 @@ void SendGeometryCmd::execute()
 			}
 		}
 	}
-	else
+	else 
 	{
 		const size_t lower_bound = m_cmdParameters.polyRange.lower_bound;
 		const size_t upper_bound = m_cmdParameters.polyRange.upper_bound;

@@ -56,7 +56,7 @@ namespace Helpers
 	std::string createEncodedPacket(const std::string& user_data);
 	std::string decodePacket(const std::string& user_packet);
 	void sendPacket(const SOCKET ClientSocket, const std::string& data);
-	std::string receivePacket(const SOCKET ClientSocket);
+	boost::optional<std::string> receivePacket(const SOCKET ClientSocket);
 
 	template<typename SizeType>
 	size_t calculatePacketLengthPrefix()

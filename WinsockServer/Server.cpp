@@ -13,6 +13,7 @@
 #include "CmdFabrique.h"
 
 namespace fs = std::experimental::filesystem;
+using namespace Helpers;
 
 const int DEFAULT_BUFLEN = 2 << 9;
 
@@ -43,9 +44,9 @@ std::vector<size_t> Server::getPolyCount() const
 	if (m_filePolyCount.empty())
 	{
 		m_filePolyCount.reserve(m_objFilesMap.size());
-		for (auto object :  m_objFilesMap)
+		for (const auto& object :  m_objFilesMap)
 		{
-			m_filePolyCount.push_back(object.second.m_polygons.size());
+			m_filePolyCount.push_back(object.second->m_polygons.size());
 		}
 	}
 	return m_filePolyCount;
@@ -78,7 +79,17 @@ std::unique_ptr<UserCommand> Server::parseUserCmd(const std::string& user_input,
 				return createSendGeometryCommand(socket, m_objFilesMap, cmd_tokens[2], *polygonCmd);
 			}
 		}
+		else if(cmd_tokens[1] == "polygons_v2" && !cmd_tokens[2].empty())
+		{
+			auto polygonCmd = Helpers::parsePolygonCmd(cmd_tokens);
+			auto object = m_objFileMap_v2.find(cmd_tokens[2]);
+			if ( object != m_objFileMap_v2.end() && polygonCmd.is_initialized())
+			{
+				return createSendGeometryCommand_v2(socket, (*object).second.get(), *polygonCmd);
+			}
+		}
 	}
+	
 
 	return createSendCommandListCommand(socket, getFileNames());
 }
@@ -95,9 +106,10 @@ void Server::processClientFunction(const SOCKET _clientSocket, const int threadC
 		try 
 		{
 			const auto client_request = Helpers::receivePacket(ClientSocket.getSocket());
-			if (client_request.is_initialized())
+			if (client_request.get())
 			{
-				auto user_command = parseUserCmd(*client_request, ClientSocket.getSocket());
+				const CStringPacket* stringPacket = static_cast<const CStringPacket*>(client_request.get());
+				auto user_command = parseUserCmd(stringPacket->GetStringData(), ClientSocket.getSocket());
 				user_command->execute();
 			}
 			else
@@ -179,6 +191,55 @@ int Server::createClientToken(std::set<int>& client_tokens)
 	return newToken;
 }
 
+std::unique_ptr<ObjFileData_v2> Server::loadAndParseObjectFile_v2(const char * filename, const char * basepath /*= ""*/, bool triangulate /*= true*/)
+{
+	console_log << "Loading obj file: " << filename << "\n";
+
+	std::string err;
+	tinyobj::attrib_t attributes;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+
+	bool ret = tinyobj::LoadObj(&attributes, &shapes, &materials, &err, filename,
+		basepath, triangulate);
+
+
+	if (!err.empty()) {
+		std::cerr << err << std::endl;
+	}
+
+	if (!ret) {
+		printf("Failed to load/parse .obj.\n");
+		return nullptr;
+	}
+	auto objData_v2 = std::make_unique<ObjFileData_v2>();
+	const size_t coordsPerVertex = 3;
+	
+	for (size_t i = 0; i < attributes.vertices.size(); i+= coordsPerVertex)
+	{
+		objData_v2->m_vertices.push_back(Point3D<float>(attributes.vertices[i], attributes.vertices[i + 1], attributes.vertices[i + 2]));
+	}
+	for (const auto& shape : shapes)
+	{
+		size_t faces_read = 0;
+		for (size_t i = 0; i < shape.mesh.indices.size();)
+		{
+			const size_t indexesPerFace = shape.mesh.num_face_vertices[faces_read];
+			std::vector<int> face_indexes;
+			for (size_t j = 0; j < indexesPerFace; j++)
+			{
+				face_indexes.push_back(shape.mesh.indices[i+j].vertex_index + 1);
+			}
+			i += indexesPerFace;
+			faces_read++;
+			objData_v2->m_faces.push_back(face_indexes);
+			
+		}
+	}
+		
+	return objData_v2;
+}
+
 std::unique_ptr<ObjFileData> Server::loadAndParseObjectFile(const char * filename,  const char * basepath /*= ""*/, bool triangulate /*= true*/)
 {
 	
@@ -242,10 +303,14 @@ void Server::loadObjFiles()
 	//Then load them and parse their geometry
 	for (const auto& filePath : m_objectFilesPathNamePairs)
 	{
-		std::unique_ptr<ObjFileData> fileData = loadAndParseObjectFile(filePath.first.c_str());//std::make_unique<ObjFileData>();
+		auto fileData = loadAndParseObjectFile(filePath.first.c_str());
+		auto fileData_v2 = loadAndParseObjectFile_v2(filePath.first.c_str());
 		if (fileData.get())
 		{
-			m_objFilesMap[filePath.second] = *fileData.get();
+			/*std::shared_ptr<ObjFileData> ofd();
+			std::shared_ptr<ObjFileData_v2> ofd2();*/
+			m_objFilesMap[filePath.second] = std::move(fileData);
+			m_objFileMap_v2[filePath.second] = std::move(fileData_v2);
 		}
 	}
 }

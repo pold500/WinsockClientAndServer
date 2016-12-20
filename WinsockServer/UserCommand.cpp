@@ -5,6 +5,7 @@
 #include "GetVertexesCommand.h"
 #include "GetGeometrySendProperFormat.h"
 #include "SendLargeFileCmd.h"
+#include "SendGeometryCmd_v2.h"
 
 //
 //std::unique_ptr<UserCommand> createCommand(const UserCmdType& cmdType, const SOCKET socket)
@@ -38,8 +39,14 @@ std::unique_ptr<UserCommand> createSendCommandListCommand(const SOCKET socket,
 
 std::unique_ptr<UserCommand> createSendGeometryCommand(const SOCKET socket, const ObjFileDataMap& objectsData, const std::string& object_name, const Helpers::PolygonCmd& cmdParams)
 {
-	return std::make_unique<SendGeometryCmd>(socket, (*objectsData.find(object_name)).second, cmdParams);
+	return std::make_unique<SendGeometryCmd>(socket, *(*objectsData.find(object_name)).second, cmdParams);
 }
+
+std::unique_ptr<UserCommand> createSendGeometryCommand_v2(const SOCKET socket, ObjFileData_v2* objectData, const Helpers::PolygonCmd& cmdParams)
+{
+	return std::make_unique<SendGeometryCmd_v2>(socket, objectData, cmdParams);
+}
+
 
 std::unique_ptr<UserCommand> createGetGeometrySendProperFormat(const SOCKET socket)
 {

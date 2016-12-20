@@ -11,12 +11,9 @@
 #include "LogStream.h"
 #include "base64_default_rfc4648.hpp"
 #include <boost/optional.hpp>
-
+#include "GeometryStructures.h"
 namespace Helpers
 {
-
-	LogStream& GetLogStream();
-	
 	template<typename T>
 	using custom_deleter_unique_ptr = std::unique_ptr<T, std::function<void(T*)>>;
 
@@ -51,12 +48,74 @@ namespace Helpers
 		operator T&() { return m_socket; }
 		operator const T&() const { return m_socket; }
 	};
+
+	struct CPacket
+	{
+		enum PacketType
+		{
+			StringResponse,
+			BinaryVertexData,
+			BinaryVertexData_V2
+		};
+		PacketType m_packetType;
+	
+		virtual std::string serialize() const = 0;
+		virtual void deserialize(const std::string& dataString) = 0;
+		inline CPacket(const PacketType& packetType);
+	};
+
+	class CStringPacket: public CPacket
+	{
+		std::string m_stringData;
+		
+	public:
+		CStringPacket();
+		CStringPacket(const std::string& strData);
+		virtual std::string serialize() const;
+		virtual void deserialize(const std::string& dataString);
+		const std::string& GetStringData() const;
+	};
+
+	struct CBinaryVertexDataPacket: public CPacket
+	{
+		struct ObjData {
+			
+			std::vector<Polygon3D> m_polygonsData;
+
+			template<class Archive>
+			void save(Archive & archive) const
+			{
+				archive(m_polygonsData);
+			}
+			template<class Archive>
+			void load(Archive & archive)
+			{
+				archive(m_polygonsData);
+			}
+		} m_objectData;
+		inline CBinaryVertexDataPacket(): CPacket(PacketType::BinaryVertexData) {}
+		CBinaryVertexDataPacket(const std::vector<Polygon3D>& polygonsData);
+		virtual std::string serialize() const;
+		virtual void deserialize(const std::string& dataString);
+	};
+	
+	struct CBinaryVertexDataPacket_V2 : public CPacket
+	{
+		ObjFileData_v2* m_objectData;
+		std::unique_ptr<ObjFileData_v2> m_objectDataClient;
+		
+		inline CBinaryVertexDataPacket_V2();
+		CBinaryVertexDataPacket_V2(ObjFileData_v2* objectData);
+		virtual std::string serialize() const;
+		virtual void deserialize(const std::string& dataString);
+	};
+
 	size_t readSizePacket(const std::string& sizePacket);
 	std::string createSizePacket(const size_t user_packet_size);
 	std::string createEncodedPacket(const std::string& user_data);
 	std::string decodePacket(const std::string& user_packet);
-	void sendPacket(const SOCKET ClientSocket, const std::string& data);
-	boost::optional<std::string> receivePacket(const SOCKET ClientSocket);
+	bool sendPacket(const SOCKET ClientSocket, const CPacket& dataPacket);
+	std::unique_ptr<CPacket> receivePacket(const SOCKET ClientSocket);
 
 	template<typename SizeType>
 	size_t calculatePacketLengthPrefix()
@@ -70,8 +129,6 @@ namespace Helpers
 	std::vector<std::string> split(const std::string & s, const char delim);
 	std::vector<std::string> split(const std::string &s, const std::string& delim);
 	
-
-
 	struct PolygonCmd
 	{
 		static PolygonCmd invalidCmd;
@@ -106,13 +163,12 @@ namespace Helpers
 
 	boost::optional<PolygonCmd> parsePolygonCmd(const std::vector<std::string>& command_tokens);
 	
+	std::unique_ptr<Helpers::CPacket> createPacketByType(const std::string& rawData);
+
+	void writeObjToFile(const std::string& file_name, const std::vector<Point3D<float>>& vertices, const std::vector<std::vector<int>>& faces);
+	
 };
 
-#define console_log Helpers::GetLogStream()
-
-#define printVar(x) console_log << #x << " : " << x << "\n";
-
-#define print(x)    console_log << x << "\n";
 
 #endif
 

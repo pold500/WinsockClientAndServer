@@ -8,20 +8,17 @@
 #include <cereal/archives/binary.hpp>
 #include <cereal/archives/json.hpp>
 
-#define console_log Helpers::GetLogStream()
-
-#define printVar(x) console_log << #x << " : " << x << "\n";
-
-#define print(x)    console_log << x << "\n";
-
-
-
 template<typename T>
 struct Point3D
 {
 	T x;
 	T y;
 	T z;
+	const T getX() const { return x; }
+	const T getY() const { return y; }
+	const T getZ() const { return z; }
+	inline Point3D() {}
+	inline Point3D(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
 	// This method lets cereal know which data members to serialize
 	template<class Archive>
 	void serialize(Archive & archive)
@@ -129,7 +126,34 @@ struct ObjFileData {
 		}
 	}
 };
-using ObjFileDataMap = std::map < std::string, ObjFileData>;
 
+struct ObjFileData_v2 {
+	std::vector<Point3D<float>> m_vertices;
+	std::vector<std::vector<int>> m_faces;
+	inline ObjFileData_v2() {}
+	ObjFileData_v2(const std::vector<Point3D<float>>& vertices,
+		const std::vector<std::vector<int>> & faces) :
+		m_vertices(vertices),
+		m_faces(faces)
+	{
+
+	}
+	template<class Archive>
+	void save(Archive & archive) const
+	{
+		archive(m_vertices);
+		archive(m_faces);
+	}
+
+	template<class Archive>
+	void load(Archive & archive)
+	{
+		archive(m_vertices);
+		archive(m_faces);
+	}
+};
+
+using ObjFileDataMap = std::map < std::string, std::unique_ptr<ObjFileData>>;
+using ObjFileDataMap_v2 = std::map < std::string, std::unique_ptr<ObjFileData_v2>>;
 
 #endif // GeometryStructures_h__

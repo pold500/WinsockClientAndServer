@@ -9,11 +9,12 @@ set(cpp_files
 GetGeometrySendProperFormat.cpp  SendLargeFileCmd.cpp  UserCommandNoOperation.cpp  stdafx.cpp
 GetVertexesCommand.cpp           Server.cpp            WSASocket.cpp
 ListCommand.cpp                  UserCommand.cpp       WinsockServerMain.cpp
+SendGeometryCmd_v2.cpp
 )
 SET(header_files
 CmdFabrique.h                  ListCommand.h       UserCommand.h             stdafx.h
 GetGeometrySendProperFormat.h  SendLargeFileCmd.h  UserCommandNoOperation.h  targetver.h
-GetVertexesCommand.h           Server.h            WSASocket.h
+GetVertexesCommand.h           Server.h            WSASocket.h 		     SendGeometryCmd_v2.h
 )
 
 set(cppcodec_dir "..\\cppcodec\\cppcodec\\")

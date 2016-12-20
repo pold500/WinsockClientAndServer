@@ -4,8 +4,9 @@ cmake_minimum_required(VERSION 2.8) # Проверка версии CMake.
 
 project(HelpersLib)				# Название проекта
 
-set(cpp_files 
+SET(cpp_files 
 Helpers.cpp  stdafx.cpp
+LogStream.cpp
 )
 SET(header_files
 GeometryStructures.h  Helpers.h  LogStream.h  stdafx.h  targetver.h

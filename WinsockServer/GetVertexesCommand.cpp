@@ -17,10 +17,8 @@ SendGeometryCmd::SendGeometryCmd(const SOCKET socket, const ObjFileData& objectD
 void SendGeometryCmd::execute()
 {
 	//Serialize polygon data
-	ObjFileData fileDataToSend;
-	fileDataToSend.m_object_name = m_objectData.m_object_name;
-	auto& polygonsToReturn = fileDataToSend.m_polygons;
-	
+	std::vector<Polygon3D> polygonsToReturn;
+
 	if (m_cmdParameters.polyList.polygons_list.size())
 	{
 		for(auto polygonIndex : m_cmdParameters.polyList.polygons_list)
@@ -40,17 +38,15 @@ void SendGeometryCmd::execute()
 			 lower_bound == upper_bound )
 		{
 			console_log << "failed to parse user range. \n";
-			Helpers::sendPacket(m_socket, "error: Wrong range! Specify range carefully.");
+			Helpers::sendPacket(m_socket, Helpers::CStringPacket("failed to parse user range"));
 			return;
 		}
 		const size_t validated_upper_bound = std::min(upper_bound, m_objectData.m_polygons.size());
 		polygonsToReturn.insert(end(polygonsToReturn), begin(m_objectData.m_polygons) + lower_bound, 
 				begin(m_objectData.m_polygons) + validated_upper_bound + 1);
 	} 
-	std::stringstream str_stream;
-	for (const auto& polygon : polygonsToReturn)
-	{
-		str_stream << polygon.toString() << "\n";
-	}
-	Helpers::sendPacket(m_socket, str_stream.str());
+	
+	Helpers::CBinaryVertexDataPacket polygonDataPacket(polygonsToReturn);
+	
+	Helpers::sendPacket(m_socket, polygonDataPacket);
 }

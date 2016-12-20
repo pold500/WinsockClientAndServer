@@ -32,13 +32,13 @@ class Server
 	std::vector<std::pair<std::string, std::string>> m_objectFilesPathNamePairs;
 	//map [name] => object file data
 	ObjFileDataMap m_objFilesMap;
-
+	ObjFileDataMap_v2 m_objFileMap_v2;
 	void processClientFunction(const SOCKET ClientSocket, const int threadClientToken);
 	int  createClientToken(std::set<int>& client_tokens);
+
 	
-	//bool loadAndParseObjectFile(const char * filename, ObjFileData attributes, const char * basepath = "", bool triangulate = true);
-	
-	std::unique_ptr<ObjFileData> loadAndParseObjectFile(const char * filename, const char * basepath = "", bool triangulate = true);
+	std::unique_ptr<ObjFileData>    loadAndParseObjectFile(const char * filename, const char * basepath = "", bool triangulate = true);
+	std::unique_ptr<ObjFileData_v2> loadAndParseObjectFile_v2(const char * filename, const char * basepath = "", bool triangulate = true);
 	void loadObjFiles();
 	
 	std::unique_ptr<UserCommand> parseUserCmd(const std::string& user_input, const SOCKET socket);

@@ -4,6 +4,10 @@
 #include <sstream>
 #include <boost/optional.hpp>
 #include <boost/algorithm/string.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/archives/binary.hpp>
+#include <fstream>
+#include <iomanip>
 
 using namespace Helpers;
 
@@ -50,7 +54,7 @@ boost::optional<PolygonCmd> Helpers::parsePolygonCmd(const std::vector<std::stri
 	//get polygons model_name.obj 1,2,3,4,5
 	//get polygons model_name.obj 1-5
 	bool is_number_of_tokens_correct = command_tokens.size() == 4;
-	bool is_cmd_spelled_right = command_tokens[0] == "get" && command_tokens[1] == "polygons";
+	bool is_cmd_spelled_right = command_tokens[0] == "get" && (command_tokens[1] == "polygons" || command_tokens[1] == "polygons_v2");
 	bool is_model_name_present_and_correct = !command_tokens[2].empty();
 	bool is_range_present = command_tokens[3].find("..") != std::string::npos;
 	bool is_list_present = command_tokens[3].find(",") != std::string::npos;
@@ -82,6 +86,60 @@ boost::optional<PolygonCmd> Helpers::parsePolygonCmd(const std::vector<std::stri
 		return boost::optional<PolygonCmd>();
 	}
 	return boost::optional<PolygonCmd>();
+}
+
+std::unique_ptr<Helpers::CPacket> Helpers::createPacketByType(const std::string& rawData)
+{
+	int type = std::stoi(rawData.substr(0, 1));
+	switch (type)
+	{
+	case CPacket::PacketType::StringResponse:
+	{
+		auto packet = std::make_unique<CStringPacket>();
+		packet->deserialize(rawData);
+		return packet;
+	}
+	break;
+	case CPacket::PacketType::BinaryVertexData:
+	{
+		auto packet = std::make_unique<CBinaryVertexDataPacket>();
+		packet->deserialize(rawData);
+		return packet;
+	}
+	break;
+	case CPacket::PacketType::BinaryVertexData_V2:
+	{
+		auto packet = std::make_unique<CBinaryVertexDataPacket_V2>();
+		packet->deserialize(rawData);
+		return packet;
+	}
+	break;
+	default:
+		throw std::logic_error("no such cmd type");
+	}
+	return nullptr;
+}
+
+void Helpers::writeObjToFile(const std::string& file_name, const std::vector<Point3D<float>>& vertices, const std::vector<std::vector<int>>& faces)
+{
+	std::fstream fs(file_name, std::ios_base::in | std::ios_base::out | std::ios_base::trunc);
+	fs << std::setprecision(6);
+	//Write all vertices to the file
+	for (const auto& vertex : vertices)
+	{
+		fs << "v " << vertex.getX() << " " << vertex.getY() << " " << vertex.getZ() << "\n";
+	}
+	fs << "\n";
+	//Write all indexes for faces
+	for (const auto& face : faces)
+	{
+		fs << "f ";
+		for(const auto& face_index : face)
+		{
+			fs << face_index << " ";
+		}
+		fs << "\n";
+	}
 }
 
 Helpers::PolygonCmd Helpers::PolygonCmd::invalidCmd = Helpers::PolygonCmd(true);
@@ -134,32 +192,39 @@ std::string Helpers::decodePacket(const std::string& user_packet)
 }
 
 
-void Helpers::sendPacket(const SOCKET ClientSocket, const std::string& data)
+bool Helpers::sendPacket(const SOCKET ClientSocket, const CPacket& dataPacket)
 {
 	//getsockopt with the opt name parameter set to SO_MAX_MSG_SIZE
 
 	//first send packet length
-	const std::string data_to_send = createEncodedPacket(data);//createSizePacket(encoded_data.length()) + encoded_data;
+	const std::string data_to_send = createEncodedPacket(dataPacket.serialize());//createSizePacket(encoded_data.length()) + encoded_data;
 	const size_t sendSize = data_to_send.size();
 	size_t sentBytesCount = 0;
 	size_t totalBytesSent = 0;
+	const size_t maxFailedAttempts = 3;
+	size_t failedAttempts = 0;
 	do
 	{
 		sentBytesCount = ::send(ClientSocket, &data_to_send[totalBytesSent], data_to_send.size() - totalBytesSent, 0);
 		totalBytesSent += sentBytesCount;
-		if (sentBytesCount == SOCKET_ERROR || WSAGetLastError())
+		if (!sentBytesCount)
+		{
+			failedAttempts++;
+		}
+		if (sentBytesCount == SOCKET_ERROR || WSAGetLastError() || failedAttempts>= maxFailedAttempts)
 		{
 			console_log << "send failed with error: " << WSAGetLastError() << "\n";
-			throw std::exception((std::string("socket error ") + std::to_string(WSAGetLastError())).c_str());
-			break;
+			//throw std::exception((std::string("socket error ") + std::to_string(WSAGetLastError())).c_str());
+			return false;
 		}
 	} while (totalBytesSent < sendSize);
-
-	
+		
 	console_log << "Total bytes sent: " << totalBytesSent << "\n";
+	return true;
 }
 
-boost::optional<std::string> Helpers::receivePacket(const SOCKET ClientSocket)
+
+std::unique_ptr<CPacket> Helpers::receivePacket(const SOCKET ClientSocket)
 {
 	std::string full_message;
 	size_t totalBytesRead = 0;
@@ -182,7 +247,7 @@ boost::optional<std::string> Helpers::receivePacket(const SOCKET ClientSocket)
 		if (WSAGetLastError() != 0 || rcvdBytesCount == INVALID_SOCKET || rcvFailed >= rcvTries)
 		{
 			console_log << "recv failed with error: " << WSAGetLastError() << "\n";
-			return boost::optional<std::string>();
+			return nullptr;
 		}
 
 		totalBytesRead += rcvdBytesCount;
@@ -200,7 +265,7 @@ boost::optional<std::string> Helpers::receivePacket(const SOCKET ClientSocket)
 
 	}
 	const auto full_message_decoded = decodePacket(full_message);
-	return full_message_decoded;
+	return Helpers::createPacketByType(full_message_decoded);
 }
 
 std::vector<std::string> Helpers::split(const std::string & s, const char delim)
@@ -217,13 +282,95 @@ std::vector<std::string> Helpers::split(const std::string & str, const std::stri
 	return std::move(splitResult);
 }
 
-LogStream::LogStream() : myStream(&std::cout)
+
+
+Helpers::CStringPacket::CStringPacket(const std::string& strData) :
+	CPacket(CPacket::PacketType::StringResponse),
+	m_stringData(strData)
 {
 
 }
 
-LogStream& Helpers::GetLogStream()
+Helpers::CStringPacket::CStringPacket(): CPacket(PacketType::StringResponse)
 {
-	static LogStream logStream;
-	return logStream;
+
+}
+
+std::string Helpers::CStringPacket::serialize() const
+{
+	std::string serializedResult;
+	serializedResult.append(std::to_string(static_cast<int>(m_packetType)));
+	serializedResult.append(m_stringData);
+	return serializedResult;
+}
+
+void Helpers::CStringPacket::deserialize(const std::string& dataString)
+{
+	this->m_packetType = static_cast<Helpers::CPacket::PacketType>(std::stoi(dataString.substr(0,1)));
+	this->m_stringData = dataString.substr(1);
+}
+
+const std::string& Helpers::CStringPacket::GetStringData() const
+{
+	return m_stringData;
+}
+
+Helpers::CBinaryVertexDataPacket::CBinaryVertexDataPacket(const std::vector<Polygon3D>& polygonsData)
+	: CPacket(PacketType::BinaryVertexData)
+		
+{
+	m_objectData.m_polygonsData = polygonsData;
+}
+
+std::string Helpers::CBinaryVertexDataPacket::serialize() const
+{
+	//Serializing to binary archive
+	std::stringstream ss;
+	ss << std::to_string(m_packetType);
+	cereal::BinaryOutputArchive binaryOutput(ss);
+	m_objectData.save(binaryOutput);
+	return ss.str();
+}
+
+void Helpers::CBinaryVertexDataPacket::deserialize(const std::string& dataString)
+{
+	std::stringstream ss;
+	ss << dataString.substr(1);
+	cereal::BinaryInputArchive binaryInput(ss);
+	m_objectData.load(binaryInput);
+}
+
+Helpers::CPacket::CPacket(const PacketType& packetType) : m_packetType(packetType)
+{
+
+}
+
+Helpers::CBinaryVertexDataPacket_V2::CBinaryVertexDataPacket_V2(ObjFileData_v2* objectData) :
+	CPacket(PacketType::BinaryVertexData_V2),
+	m_objectData(objectData)
+{
+
+}
+
+Helpers::CBinaryVertexDataPacket_V2::CBinaryVertexDataPacket_V2() : CPacket(PacketType::BinaryVertexData_V2), m_objectData(new ObjFileData_v2()),
+	m_objectDataClient(m_objectData)
+{
+	
+}
+
+std::string Helpers::CBinaryVertexDataPacket_V2::serialize() const
+{
+	std::stringstream ss;
+	ss << std::to_string(m_packetType);
+	cereal::BinaryOutputArchive binaryOutput(ss);
+	m_objectData->save(binaryOutput);
+	return ss.str();
+}
+
+void Helpers::CBinaryVertexDataPacket_V2::deserialize(const std::string& dataString)
+{
+	std::stringstream ss;
+	ss << dataString.substr(1);
+	cereal::BinaryInputArchive binaryInput(ss);
+	m_objectData->load(binaryInput);
 }

@@ -6,7 +6,7 @@ class GetGeometrySendProperFormat : public UserCommand
 	SOCKET m_socket;
 public:
 	GetGeometrySendProperFormat(SOCKET socket);
-	virtual void execute() override;
+	virtual void execute();
 };
 
 #endif // GetGeometrySendProperFormat_h__

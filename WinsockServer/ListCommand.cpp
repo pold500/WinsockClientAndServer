@@ -10,6 +10,6 @@ void ListFilesUserCommand::execute()
 	{
 		listOfFilesAvailable += m_fileList[i].name + " polyCount: " + std::to_string(m_fileList[i].polygonCount) + " \n";
 	}
-	
-	Helpers::sendPacket(m_ClientSocket, listOfFilesAvailable);
+	Helpers::CStringPacket stringPacket(listOfFilesAvailable);
+	Helpers::sendPacket(m_ClientSocket, stringPacket);
 }

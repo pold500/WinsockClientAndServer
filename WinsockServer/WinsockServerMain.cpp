@@ -2,6 +2,8 @@
 #include "WSASocket.h"
 #include "Helpers.h"
 #include "Server.h"
+#include "LogStream.h"
+
 #pragma comment (lib, "Ws2_32.lib")
 
 int main(void)

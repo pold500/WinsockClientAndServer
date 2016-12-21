@@ -7,7 +7,8 @@ set(cppcodec_dir "..\\cppcodec\\cppcodec\\")
 set(tinyobj_header_only "..\\tinyobjloader-master\\")
 set(cereal "..\\cereal-1.2.1\\include\\")
 
+add_subdirectory("HelperLibrary")
 add_subdirectory("WinsockClient")
 add_subdirectory("WinsockServer")
-add_subdirectory("HelperLibrary")
+
 

@@ -31,7 +31,7 @@ include_directories(${cereal})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "..\\")
 
 add_executable(Server ${cpp_files} ${header_files})	
-
+add_dependencies(Server HelpersLib)
 target_link_libraries(Server "..\\static_libs\\$(PlatformTarget)\\$(Configuration)\\helperslib.lib")
 
 ADD_CUSTOM_COMMAND(TARGET Server

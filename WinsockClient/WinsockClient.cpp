@@ -44,15 +44,15 @@ bool updateTask(SOCKET ConnectionSocket)
 					return false;
 				}
 
-				if (rcvdPacket->m_packetType == Helpers::CPacket::StringResponse)
+				if (rcvdPacket->GetPacketType() == Helpers::CPacket::StringResponse)
 				{
 					std::cout << static_cast<const Helpers::CStringPacket*>(rcvdPacket.get())->GetStringData() << std::endl;
 				}
-				else if(rcvdPacket->m_packetType == Helpers::CPacket::BinaryVertexData_V2)//we have a binary vertex data
+				else if(rcvdPacket->GetPacketType() == Helpers::CPacket::BinaryVertexData_V2)//we have a binary vertex data
 				{
 					//save it to file
 					auto packet = static_cast<Helpers::CBinaryVertexDataPacket_V2*>(rcvdPacket.get());
-					Helpers::writeObjToFile("objFromServer.obj", packet->m_objectData->m_vertices, packet->m_objectData->m_faces);
+					Helpers::writeObjToFile("objFromServer.obj", packet->GetData()->m_vertices, packet->GetData()->m_faces);
 				}
 			}
 			catch (const std::exception& ex)

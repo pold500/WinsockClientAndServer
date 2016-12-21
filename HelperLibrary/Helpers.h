@@ -49,19 +49,22 @@ namespace Helpers
 		operator const T&() const { return m_socket; }
 	};
 
-	struct CPacket
+	class CPacket
 	{
+		
+	public:
 		enum PacketType
 		{
 			StringResponse,
 			BinaryVertexData,
 			BinaryVertexData_V2
 		};
-		PacketType m_packetType;
-	
 		virtual std::string serialize() const = 0;
 		virtual void deserialize(const std::string& dataString) = 0;
 		inline CPacket(const PacketType& packetType);
+		Helpers::CPacket::PacketType GetPacketType() const { return m_packetType; }
+	private:
+		PacketType m_packetType;
 	};
 
 	class CStringPacket: public CPacket
@@ -76,10 +79,10 @@ namespace Helpers
 		const std::string& GetStringData() const;
 	};
 
-	struct CBinaryVertexDataPacket: public CPacket
+	class CBinaryVertexDataPacket: public CPacket
 	{
-		struct ObjData {
-			
+		struct ObjData 
+		{
 			std::vector<Polygon3D> m_polygonsData;
 
 			template<class Archive>
@@ -92,22 +95,30 @@ namespace Helpers
 			{
 				archive(m_polygonsData);
 			}
-		} m_objectData;
+		};
+		ObjData m_objectData;
+	public:
+
 		inline CBinaryVertexDataPacket(): CPacket(PacketType::BinaryVertexData) {}
 		CBinaryVertexDataPacket(const std::vector<Polygon3D>& polygonsData);
 		virtual std::string serialize() const;
 		virtual void deserialize(const std::string& dataString);
+		Helpers::CBinaryVertexDataPacket::ObjData SetObjectData() const { return m_objectData; }
+		void GetObjectData(Helpers::CBinaryVertexDataPacket::ObjData val) { m_objectData = val; }
 	};
 	
-	struct CBinaryVertexDataPacket_V2 : public CPacket
+	class CBinaryVertexDataPacket_V2 : public CPacket
 	{
-		ObjFileData_v2* m_objectData;
-		std::unique_ptr<ObjFileData_v2> m_objectDataClient;
-		
+	public:
 		inline CBinaryVertexDataPacket_V2();
 		CBinaryVertexDataPacket_V2(ObjFileData_v2* objectData);
 		virtual std::string serialize() const;
 		virtual void deserialize(const std::string& dataString);
+		ObjFileData_v2* GetData() const { return m_objectData; }
+		void SetData(ObjFileData_v2* val) { m_objectData = val; }
+	private:
+		ObjFileData_v2* m_objectData;
+		std::unique_ptr<ObjFileData_v2> m_objectDataClient;
 	};
 
 	size_t readSizePacket(const std::string& sizePacket);

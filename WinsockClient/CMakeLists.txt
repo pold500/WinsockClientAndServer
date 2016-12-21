@@ -25,5 +25,5 @@ include_directories(${cereal})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "..\\")
 
 add_executable(Client ${cpp_files} ${header_files})	
-
+add_dependencies(Client HelpersLib)
 target_link_libraries(Client "..\\static_libs\\$(PlatformTarget)\\$(Configuration)\\helperslib.lib")

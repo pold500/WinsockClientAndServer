@@ -299,14 +299,13 @@ Helpers::CStringPacket::CStringPacket(): CPacket(PacketType::StringResponse)
 std::string Helpers::CStringPacket::serialize() const
 {
 	std::string serializedResult;
-	serializedResult.append(std::to_string(static_cast<int>(m_packetType)));
+	serializedResult.append(std::to_string(static_cast<int>(GetPacketType())));
 	serializedResult.append(m_stringData);
 	return serializedResult;
 }
 
 void Helpers::CStringPacket::deserialize(const std::string& dataString)
 {
-	this->m_packetType = static_cast<Helpers::CPacket::PacketType>(std::stoi(dataString.substr(0,1)));
 	this->m_stringData = dataString.substr(1);
 }
 
@@ -319,16 +318,16 @@ Helpers::CBinaryVertexDataPacket::CBinaryVertexDataPacket(const std::vector<Poly
 	: CPacket(PacketType::BinaryVertexData)
 		
 {
-	m_objectData.m_polygonsData = polygonsData;
+	SetObjectData().m_polygonsData = polygonsData;
 }
 
 std::string Helpers::CBinaryVertexDataPacket::serialize() const
 {
 	//Serializing to binary archive
 	std::stringstream ss;
-	ss << std::to_string(m_packetType);
+	ss << std::to_string(GetPacketType());
 	cereal::BinaryOutputArchive binaryOutput(ss);
-	m_objectData.save(binaryOutput);
+	SetObjectData().save(binaryOutput);
 	return ss.str();
 }
 
@@ -337,7 +336,7 @@ void Helpers::CBinaryVertexDataPacket::deserialize(const std::string& dataString
 	std::stringstream ss;
 	ss << dataString.substr(1);
 	cereal::BinaryInputArchive binaryInput(ss);
-	m_objectData.load(binaryInput);
+	SetObjectData().load(binaryInput);
 }
 
 Helpers::CPacket::CPacket(const PacketType& packetType) : m_packetType(packetType)
@@ -353,7 +352,7 @@ Helpers::CBinaryVertexDataPacket_V2::CBinaryVertexDataPacket_V2(ObjFileData_v2* 
 }
 
 Helpers::CBinaryVertexDataPacket_V2::CBinaryVertexDataPacket_V2() : CPacket(PacketType::BinaryVertexData_V2), m_objectData(new ObjFileData_v2()),
-	m_objectDataClient(m_objectData)
+	m_objectDataClient(GetData())
 {
 	
 }
@@ -361,9 +360,9 @@ Helpers::CBinaryVertexDataPacket_V2::CBinaryVertexDataPacket_V2() : CPacket(Pack
 std::string Helpers::CBinaryVertexDataPacket_V2::serialize() const
 {
 	std::stringstream ss;
-	ss << std::to_string(m_packetType);
+	ss << std::to_string(GetPacketType());
 	cereal::BinaryOutputArchive binaryOutput(ss);
-	m_objectData->save(binaryOutput);
+	GetData()->save(binaryOutput);
 	return ss.str();
 }
 
@@ -372,5 +371,5 @@ void Helpers::CBinaryVertexDataPacket_V2::deserialize(const std::string& dataStr
 	std::stringstream ss;
 	ss << dataString.substr(1);
 	cereal::BinaryInputArchive binaryInput(ss);
-	m_objectData->load(binaryInput);
+	GetData()->load(binaryInput);
 }

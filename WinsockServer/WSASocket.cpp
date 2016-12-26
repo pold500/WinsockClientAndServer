@@ -2,7 +2,7 @@
 #include "WSASocket.h"
 #include <WinSock2.h>
 
-const char* WSASocketC::DEFAULT_PORT = "27015";
+const char* WSASocketC::DEFAULT_PORT = "732";
 
 void WSASocketC::initWSA()
 {

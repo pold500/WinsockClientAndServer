@@ -4,8 +4,10 @@
 #include <sstream>
 #include <boost/optional.hpp>
 #include <boost/algorithm/string.hpp>
+#include <cereal/types/string.hpp>
 #include <cereal/types/vector.hpp>
 #include <cereal/archives/binary.hpp>
+#include <cereal/access.hpp>
 #include <fstream>
 #include <iomanip>
 
@@ -48,38 +50,55 @@ boost::optional<PolygonCmd::PolygonList> tryToParseList(const std::string& range
 	return boost::optional<PolygonCmd::PolygonList>();
 }
 
-boost::optional<PolygonCmd> Helpers::parsePolygonCmd(const std::vector<std::string>& command_tokens)
+boost::optional<PolygonCmd> Helpers::parsePolygonCmd(const std::vector<std::string>& command_tokens, const ObjFileData_v2* objectData)
 {
 	//cmd format:
 	//get polygons model_name.obj 1,2,3,4,5
 	//get polygons model_name.obj 1-5
-	bool is_number_of_tokens_correct = command_tokens.size() == 4;
+	bool is_number_of_tokens_correct = command_tokens.size() >= 3;
 	bool is_cmd_spelled_right = command_tokens[0] == "get" && (command_tokens[1] == "polygons" || command_tokens[1] == "polygons_v2");
 	bool is_model_name_present_and_correct = !command_tokens[2].empty();
-	bool is_range_present = command_tokens[3].find("..") != std::string::npos;
-	bool is_list_present = command_tokens[3].find(",") != std::string::npos;
+	bool is_poly_range_or_list_present = command_tokens.size() >= 4;
+	bool is_range_present = is_poly_range_or_list_present ? command_tokens[3].find("..") != std::string::npos : false;
+	bool is_list_present = is_poly_range_or_list_present ? command_tokens[3].find(",") != std::string::npos : false;
 	
-	if (is_number_of_tokens_correct && is_cmd_spelled_right && is_model_name_present_and_correct && (is_range_present || is_list_present))
+	if (is_number_of_tokens_correct && is_cmd_spelled_right && is_model_name_present_and_correct)
 	{
-		Helpers::PolygonCmd polygonCmd(false);
-		polygonCmd.file_name = command_tokens[2];
-
+		if (is_range_present || is_list_present)
 		{
-			auto polyRange = tryToParseRange(command_tokens[3]);
-			if (polyRange.is_initialized())
+			Helpers::PolygonCmd polygonCmd(false);
+			polygonCmd.file_name = command_tokens[2];
+
 			{
-				polygonCmd.polyRange = *polyRange;
-			}
-			else
-			{
-				auto polyList = tryToParseList(command_tokens[3]);
-				if (polyList.is_initialized())
+				auto polyRange = tryToParseRange(command_tokens[3]);
+				if (polyRange.is_initialized())
 				{
-					polygonCmd.polyList = *polyList;
+					polygonCmd.polyRange = *polyRange;
+				}
+				else
+				{
+					auto polyList = tryToParseList(command_tokens[3]);
+					if (polyList.is_initialized())
+					{
+						polygonCmd.polyList = *polyList;
+					}
 				}
 			}
+			return polygonCmd;
 		}
-		return polygonCmd;
+		else
+		{
+			//user didn't specified the list or range, send them all geometry
+			Helpers::PolygonCmd polygonCmd(false);
+			polygonCmd.file_name = command_tokens[2];
+			const size_t modelTotalPolygonsCount = objectData->m_faces.size() - 1;
+			PolygonCmd::PolygonRange polyRange;
+			polyRange.lower_bound = 0;
+			polyRange.upper_bound = modelTotalPolygonsCount;
+			polygonCmd.polyRange = polyRange;
+			polygonCmd.parameters_type = PolygonCmd::Type::Interval;
+			return polygonCmd;
+		}
 	}
 	else
 	{
@@ -146,8 +165,7 @@ Helpers::PolygonCmd Helpers::PolygonCmd::invalidCmd = Helpers::PolygonCmd(true);
 
 size_t Helpers::readSizePacket(const std::string& sizePacket)
 {
-	const auto decode = base64::decode(sizePacket.substr(0, calculatePacketLengthPrefix<size_t>()));
-	std::string decoded_packet(begin(decode), end(decode));
+	const auto decoded_packet = sizePacket.substr(0, calculatePacketLengthPrefix<size_t>());
 	size_t packetSize = 0;
 	packetSize |= (((uint8_t)decoded_packet[0]) << 24); //higher value of 16 bit unsigned size
 	packetSize |= (((uint8_t)decoded_packet[1]) << 16);
@@ -165,18 +183,14 @@ std::string Helpers::createSizePacket(const size_t user_packet_size)
 	sizePacket[1] = (full_packet_size >> 16) & 0xFF;
 	sizePacket[2] = (full_packet_size >> 8) & 0xFF;
 	sizePacket[3] = (full_packet_size & 0xFF);
-
-	return base64::encode(sizePacket);
+	return sizePacket;
 }
 
 std::string Helpers::createEncodedPacket(const std::string& user_data)
 {
-	const std::string encoded_user_data = base64::encode(user_data);
-	const std::string message_to_send = createSizePacket(encoded_user_data.length()) + encoded_user_data;
+	const std::string message_to_send = createSizePacket(user_data.length()) + user_data;
 	return message_to_send;
 }
-
-
 
 std::string Helpers::decodePacket(const std::string& user_packet)
 {
@@ -187,17 +201,15 @@ std::string Helpers::decodePacket(const std::string& user_packet)
 	std::string packet_size;
 	const auto encodedSizePacketLength = calculatePacketLengthPrefix<size_t>();
 	const auto packet_load = user_packet.substr(encodedSizePacketLength); //drop off packet length data
-	const auto decoded_data = base64::decode(packet_load);
-	return std::string(begin(decoded_data), end(decoded_data));
+	const auto decoded_data = packet_load;
+	return decoded_data;
 }
 
 
 bool Helpers::sendPacket(const SOCKET ClientSocket, const CPacket& dataPacket)
 {
-	//getsockopt with the opt name parameter set to SO_MAX_MSG_SIZE
-
 	//first send packet length
-	const std::string data_to_send = createEncodedPacket(dataPacket.serialize());//createSizePacket(encoded_data.length()) + encoded_data;
+	const std::string data_to_send = createEncodedPacket(dataPacket.serialize());
 	const size_t sendSize = data_to_send.size();
 	size_t sentBytesCount = 0;
 	size_t totalBytesSent = 0;
@@ -298,15 +310,20 @@ Helpers::CStringPacket::CStringPacket(): CPacket(PacketType::StringResponse)
 
 std::string Helpers::CStringPacket::serialize() const
 {
-	std::string serializedResult;
-	serializedResult.append(std::to_string(static_cast<int>(GetPacketType())));
-	serializedResult.append(m_stringData);
-	return serializedResult;
+	std::stringstream ss;
+	cereal::BinaryOutputArchive binaryOutput(ss);
+	ss << std::to_string(GetPacketType());
+	save(binaryOutput);
+	return ss.str();
 }
 
 void Helpers::CStringPacket::deserialize(const std::string& dataString)
 {
-	this->m_stringData = dataString.substr(1);
+	std::stringstream ss;
+	ss << dataString.substr(1);
+	cereal::BinaryInputArchive binaryInput(ss);
+	load(binaryInput);
+	m_packetType = CPacket::StringResponse;
 }
 
 const std::string& Helpers::CStringPacket::GetStringData() const
@@ -318,7 +335,7 @@ Helpers::CBinaryVertexDataPacket::CBinaryVertexDataPacket(const std::vector<Poly
 	: CPacket(PacketType::BinaryVertexData)
 		
 {
-	SetObjectData().m_polygonsData = polygonsData;
+	m_objectData.m_polygonsData = polygonsData;
 }
 
 std::string Helpers::CBinaryVertexDataPacket::serialize() const
@@ -327,7 +344,7 @@ std::string Helpers::CBinaryVertexDataPacket::serialize() const
 	std::stringstream ss;
 	ss << std::to_string(GetPacketType());
 	cereal::BinaryOutputArchive binaryOutput(ss);
-	SetObjectData().save(binaryOutput);
+	m_objectData.save(binaryOutput);
 	return ss.str();
 }
 
@@ -336,7 +353,8 @@ void Helpers::CBinaryVertexDataPacket::deserialize(const std::string& dataString
 	std::stringstream ss;
 	ss << dataString.substr(1);
 	cereal::BinaryInputArchive binaryInput(ss);
-	SetObjectData().load(binaryInput);
+	m_objectData.load(binaryInput);
+	m_packetType = CPacket::BinaryVertexData;
 }
 
 Helpers::CPacket::CPacket(const PacketType& packetType) : m_packetType(packetType)
@@ -372,4 +390,5 @@ void Helpers::CBinaryVertexDataPacket_V2::deserialize(const std::string& dataStr
 	ss << dataString.substr(1);
 	cereal::BinaryInputArchive binaryInput(ss);
 	GetData()->load(binaryInput);
+	m_packetType = CPacket::BinaryVertexData_V2;
 }

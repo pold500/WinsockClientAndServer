@@ -9,9 +9,10 @@
 #include <WinSock2.h>		
 #include <iostream>
 #include "LogStream.h"
-#include "base64_default_rfc4648.hpp"
 #include <boost/optional.hpp>
 #include "GeometryStructures.h"
+
+
 namespace Helpers
 {
 	template<typename T>
@@ -63,13 +64,13 @@ namespace Helpers
 		virtual void deserialize(const std::string& dataString) = 0;
 		inline CPacket(const PacketType& packetType);
 		Helpers::CPacket::PacketType GetPacketType() const { return m_packetType; }
-	private:
+	protected:
 		PacketType m_packetType;
 	};
 
 	class CStringPacket: public CPacket
 	{
-		std::string m_stringData;
+		
 		
 	public:
 		CStringPacket();
@@ -77,6 +78,27 @@ namespace Helpers
 		virtual std::string serialize() const;
 		virtual void deserialize(const std::string& dataString);
 		const std::string& GetStringData() const;
+
+		
+	private:
+
+		std::string m_stringData;
+		friend class cereal::access;
+
+		template <class Archive>
+		void save(Archive & archive) const
+		{
+			archive(m_packetType);
+			archive(m_stringData);
+		}
+
+		template<class Archive>
+		void load(Archive & archive)
+		{
+			archive(m_packetType);
+			archive(m_stringData);
+		}
+
 	};
 
 	class CBinaryVertexDataPacket: public CPacket
@@ -95,6 +117,15 @@ namespace Helpers
 			{
 				archive(m_polygonsData);
 			}
+			std::string toString() const
+			{
+				std::stringstream result;
+				for (const auto& polygon : m_polygonsData)
+				{
+					result << polygon.toString() << "\n";
+				}
+				return result.str();
+			}
 		};
 		ObjData m_objectData;
 	public:
@@ -103,8 +134,8 @@ namespace Helpers
 		CBinaryVertexDataPacket(const std::vector<Polygon3D>& polygonsData);
 		virtual std::string serialize() const;
 		virtual void deserialize(const std::string& dataString);
-		Helpers::CBinaryVertexDataPacket::ObjData SetObjectData() const { return m_objectData; }
-		void GetObjectData(Helpers::CBinaryVertexDataPacket::ObjData val) { m_objectData = val; }
+		const Helpers::CBinaryVertexDataPacket::ObjData& GetObjectData() const { return m_objectData; }
+		void SetObjectData(const Helpers::CBinaryVertexDataPacket::ObjData& val) { m_objectData = val; }
 	};
 	
 	class CBinaryVertexDataPacket_V2 : public CPacket
@@ -131,11 +162,7 @@ namespace Helpers
 	template<typename SizeType>
 	size_t calculatePacketLengthPrefix()
 	{
-		std::string packet_size;
-		packet_size.resize(sizeof(SizeType));
-		std::fill_n(begin(packet_size), sizeof(SizeType), 'a');
-		const size_t encodedSizePacketLength = base64::encode(packet_size).length();
-		return encodedSizePacketLength;
+		return sizeof(SizeType);
 	}
 	std::vector<std::string> split(const std::string & s, const char delim);
 	std::vector<std::string> split(const std::string &s, const std::string& delim);
@@ -172,7 +199,7 @@ namespace Helpers
 		PolygonCmd(bool _isInvalid) : isInvalid(_isInvalid) {}
 	};
 
-	boost::optional<PolygonCmd> parsePolygonCmd(const std::vector<std::string>& command_tokens);
+	boost::optional<PolygonCmd> parsePolygonCmd(const std::vector<std::string>& command_tokens, const ObjFileData_v2* objectData);
 	
 	std::unique_ptr<Helpers::CPacket> createPacketByType(const std::string& rawData);
 

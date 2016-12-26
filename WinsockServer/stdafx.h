@@ -25,7 +25,6 @@
 #include <algorithm>
 #include <map>
 #include <experimental/filesystem>
-#include "base64_default_rfc4648.hpp"
 #undef max
 #undef min
 #endif // stdafx_h__

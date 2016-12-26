@@ -52,6 +52,21 @@ std::vector<size_t> Server::getPolyCount() const
 	return m_filePolyCount;
 }
 
+bool AreStringsEqual(const std::string& str, const char* pattern)
+{
+	return str.substr(0, strlen(str.c_str())) == pattern;
+}
+
+std::vector<std::string> RipoffTerminatingNulls(std::vector<std::string>& strings)
+{
+	size_t stringsCount = strings.size();
+	std::vector<std::string> fixed_strings;
+	for (const auto& string : strings)
+	{
+		fixed_strings.push_back(string.substr(0, strlen(string.c_str())));
+	}
+	return fixed_strings;
+}
 
 std::unique_ptr<UserCommand> Server::parseUserCmd(const std::string& user_input, const SOCKET socket)
 {
@@ -59,33 +74,50 @@ std::unique_ptr<UserCommand> Server::parseUserCmd(const std::string& user_input,
 	if (user_input.empty())
 		return createListFilesCommand(socket, getFileNames(), getPolyCount());
 
-	std::vector<std::string> cmd_tokens = Helpers::split(user_input, " ");
-	if (cmd_tokens[0] == "getlargefile")
+	const auto cmd_tokens = Helpers::split(user_input, " ");
+	
+	if (AreStringsEqual(cmd_tokens[0], "getlargefile"))
 	{
 		return getLargeFileCmd(socket);
 	}
-	if (cmd_tokens[0] == "list")
+	if (AreStringsEqual(cmd_tokens[0], "list"))
 	{
 		return createListFilesCommand(socket, getFileNames(), getPolyCount());
 	}
-	if (cmd_tokens[0] == "get")
+	if (AreStringsEqual(cmd_tokens[0], "get"))
 	{
-		const size_t cmd_params_count = 4;
-		if (cmd_tokens.size() == cmd_params_count && cmd_tokens[1] == "polygons")
+		const size_t min_required_cmd_params_count = 3;
+
+		if (cmd_tokens.size() < min_required_cmd_params_count)
 		{
-			auto polygonCmd = Helpers::parsePolygonCmd(cmd_tokens);
+			return createStringResponseCommand(socket, "Please specify a file name!");
+		}
+
+		auto object = m_objFileMap_v2.find(cmd_tokens[2]);
+		if (object == m_objFileMap_v2.end())
+		{
+			return createStringResponseCommand(socket, "Please specify file name from a list of files. Issue list command to get this list!");
+		}
+
+		if (cmd_tokens[1] == "polygons")
+		{
+			auto polygonCmd = Helpers::parsePolygonCmd(cmd_tokens, (*object).second.get());
 			if (polygonCmd.is_initialized())
 			{
 				return createSendGeometryCommand(socket, m_objFilesMap, cmd_tokens[2], *polygonCmd);
 			}
 		}
-		else if(cmd_tokens[1] == "polygons_v2" && !cmd_tokens[2].empty())
+		else if(cmd_tokens[1] == "polygons_v2" && !cmd_tokens[2].empty() && cmd_tokens.size() >= 3)
 		{
-			auto polygonCmd = Helpers::parsePolygonCmd(cmd_tokens);
-			auto object = m_objFileMap_v2.find(cmd_tokens[2]);
-			if ( object != m_objFileMap_v2.end() && polygonCmd.is_initialized())
+			auto polygonCmd = Helpers::parsePolygonCmd(cmd_tokens, (*object).second.get());
+			
+			if (polygonCmd.is_initialized())
 			{
 				return createSendGeometryCommand_v2(socket, (*object).second.get(), *polygonCmd);
+			}
+			else
+			{
+				return createStringResponseCommand(socket, "Was unable to parse range of polygons specified in command.");
 			}
 		}
 	}
@@ -103,10 +135,10 @@ void Server::processClientFunction(const SOCKET _clientSocket, const int threadC
 	while (true)
 	{
 		//Analyze command
-		try 
+		//try 
 		{
 			const auto client_request = Helpers::receivePacket(ClientSocket.getSocket());
-			if (client_request.get())
+			if (client_request.get() /*&& client_request->GetPacketType() == CPacket::StringResponse*/)
 			{
 				const CStringPacket* stringPacket = static_cast<const CStringPacket*>(client_request.get());
 				auto user_command = parseUserCmd(stringPacket->GetStringData(), ClientSocket.getSocket());
@@ -119,11 +151,11 @@ void Server::processClientFunction(const SOCKET _clientSocket, const int threadC
 				break;
 			}
 		}
-		catch (std::exception& ex)
+		/*catch (std::exception& ex)
 		{
 			console_log << "processClientFunction thread caught exception: " << ex.what() << "\n";
 			break;
-		}
+		}*/
 	}
 }
 
@@ -240,11 +272,11 @@ std::unique_ptr<ObjFileData_v2> Server::loadAndParseObjectFile_v2(const char * f
 	return objData_v2;
 }
 
-std::unique_ptr<ObjFileData> Server::loadAndParseObjectFile(const char * filename,  const char * basepath /*= ""*/, bool triangulate /*= true*/)
+std::unique_ptr<ObjFileData> Server::loadAndParseObjectFile(const char * filename, const char * basepath /*= ""*/, bool triangulate /*= true*/)
 {
-	
+
 	console_log << "Loading obj file: " << filename << "\n";
-		
+
 
 	std::string err;
 	tinyobj::attrib_t attributes;
@@ -268,12 +300,11 @@ std::unique_ptr<ObjFileData> Server::loadAndParseObjectFile(const char * filenam
 	{
 		auto polygons = GetPolygonsFromShapes(shapes, attributes);
 		fs::path p(filename);
-		
+
 		auto objFileData = std::make_unique<ObjFileData>(p.filename().string(), polygons);
 		return objFileData;
 	}
 	return nullptr;
-	//PrintInfo(attributes, shapes, materials);
 }
 
 void Server::loadObjFiles()
@@ -307,8 +338,6 @@ void Server::loadObjFiles()
 		auto fileData_v2 = loadAndParseObjectFile_v2(filePath.first.c_str());
 		if (fileData.get())
 		{
-			/*std::shared_ptr<ObjFileData> ofd();
-			std::shared_ptr<ObjFileData_v2> ofd2();*/
 			m_objFilesMap[filePath.second] = std::move(fileData);
 			m_objFileMap_v2[filePath.second] = std::move(fileData_v2);
 		}

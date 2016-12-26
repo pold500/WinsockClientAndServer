@@ -18,7 +18,6 @@
 #include <limits>
 #include <string>
 #include <fstream>
-#include "base64_default_rfc4648.hpp"
 
 // TODO: reference additional headers your program requires here
 #endif // stdafx_h__

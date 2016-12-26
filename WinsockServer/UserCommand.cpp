@@ -6,23 +6,12 @@
 #include "GetGeometrySendProperFormat.h"
 #include "SendLargeFileCmd.h"
 #include "SendGeometryCmd_v2.h"
+#include "StringResponseCmd.h"
 
-//
-//std::unique_ptr<UserCommand> createCommand(const UserCmdType& cmdType, const SOCKET socket)
-//{
-//	switch (cmdType)
-//	{
-//	case UserCmdType::ListAvailableCommands:
-//		return std::make_unique<UserCommandNoOperation>(socket);
-//		break;
-//	case UserCmdType::ListFiles:
-//		return std::make_unique<ListCommand>(socket);
-//		break;
-//		case UserC
-//	default:
-//		return std::make_unique<UserCommandNoOperation>(socket);
-//	}
-//}
+std::unique_ptr<UserCommand> createStringResponseCommand(const SOCKET socket, const std::string& responseText)
+{
+	return std::make_unique<StringResponseCmd>(socket, responseText);
+}
 
 std::unique_ptr<UserCommand> createListFilesCommand(const SOCKET socket, 
 	const std::vector<std::string>& fileNames, const std::vector<size_t>& polyCountVector)

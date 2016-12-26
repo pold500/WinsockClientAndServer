@@ -3,7 +3,7 @@
 #include <WinSock2.h>
 
 #define DEFAULT_BUFLEN 512
-#define DEFAULT_PORT "27015"
+#define DEFAULT_PORT "732"
 
 SOCKET WSAClient::getClientSocket()
 {

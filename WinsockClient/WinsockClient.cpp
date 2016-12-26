@@ -48,6 +48,11 @@ bool updateTask(SOCKET ConnectionSocket)
 				{
 					std::cout << static_cast<const Helpers::CStringPacket*>(rcvdPacket.get())->GetStringData() << std::endl;
 				}
+				else if (rcvdPacket->GetPacketType() == Helpers::CPacket::BinaryVertexData)
+				{
+					auto packet = static_cast<Helpers::CBinaryVertexDataPacket*>(rcvdPacket.get());
+					std::cout << packet->GetObjectData().toString() << std::endl;
+				}
 				else if(rcvdPacket->GetPacketType() == Helpers::CPacket::BinaryVertexData_V2)//we have a binary vertex data
 				{
 					//save it to file
@@ -68,9 +73,7 @@ int main(int argc, char **argv)
 	std::cout << "Client started \n";
 	
 	WSAClient client;
-
-	//const Helpers::Socket<SOCKET> ConnectionSocket = client.getClientSocket();
-
+	
 	while(const Helpers::Socket<SOCKET> ConnectionSocket = client.getClientSocket())
 	{
 		while (updateTask(ConnectionSocket.getSocket()));

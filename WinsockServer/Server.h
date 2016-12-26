@@ -26,8 +26,6 @@ class Server
 	Helpers::Socket<SOCKET> m_listenSocket;
 	WSASocketC* m_wsaSocket;
 	
-
-
 	//where we store obj files
 	std::vector<std::pair<std::string, std::string>> m_objectFilesPathNamePairs;
 	//map [name] => object file data

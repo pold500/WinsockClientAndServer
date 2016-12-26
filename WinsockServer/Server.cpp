@@ -144,7 +144,7 @@ void Server::Update()
 
 	console_log << "We got a connecting client!... \n";
 	auto threadFunc = [ClientSocket, this]() { this->processClientFunction(ClientSocket, createClientToken(m_clientTokensSet)); };
-	auto func_thread_deleter = [](std::thread* thread) { thread->detach(); };
+	auto func_thread_deleter = [](std::thread* thread) { thread->detach(); delete thread; };
 	m_clientProcessingThreads.push_back(thread_ptr(new std::thread(threadFunc), func_thread_deleter));
 }
 
